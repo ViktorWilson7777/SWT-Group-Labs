@@ -1,0 +1,35 @@
+# =====================================================================
+# CHẾ ĐỘ WHITELIST: Chặn toàn bộ file/thư mục ngoài luồng ở thư mục gốc
+# (Các tài liệu riêng để ở máy local cho AI đọc sẽ KHÔNG bị đẩy lên Git)
+# =====================================================================
+/*
+
+# Chỉ cho phép đẩy đúng 4 thư mục chuẩn trong Kế hoạch Lab (+ .gitignore):
+!/.gitignore
+!/Lab1_JUnit5/
+!/Lab2_NodeJS/
+!/Lab3_Selenium_EGA_Autocare/
+!/Lab4_ISTQB_TestPlan/
+
+# =====================================================================
+# Chặn các file rác, file nén, thư viện nặng bên trong 4 thư mục Lab:
+# =====================================================================
+**/node_modules/
+**/__pycache__/
+**/*.py[cod]
+*$py.class
+**/.DS_Store
+**/Thumbs.db
+**/*.log
+**/*.zip
+**/*.rar
+**/*.7z
+**/~$*
+
+# Chặn file biên dịch tạm của Maven/Java (vẫn giữ lại target/site & target/surefire-reports cho Report)
+**/target/classes/
+**/target/test-classes/
+**/target/generated-sources/
+**/target/generated-test-sources/
+**/target/maven-status/
+**/target/maven-archiver/
