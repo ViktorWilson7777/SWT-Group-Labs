@@ -25,6 +25,17 @@
 **/*.rar
 **/*.7z
 **/~$*
+**/snapshot_images/
+**/coverage/components/
+**/coverage/services/
+**/coverage/utils/
+**/coverage/jest-html-reporters-attach/
+**/coverage/jest_html_report.html
+**/coverage/lcov.info
+**/coverage/*.html
+**/coverage/*.css
+**/coverage/*.js
+**/coverage/*.png
 
 # Chặn file biên dịch tạm của Maven/Java (vẫn giữ lại target/site & target/surefire-reports cho Report)
 **/target/classes/
