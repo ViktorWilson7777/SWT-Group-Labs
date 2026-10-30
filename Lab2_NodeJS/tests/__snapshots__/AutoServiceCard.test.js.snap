@@ -1,0 +1,337 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Lab 2 - Requirement (iii): Test Snapshot (AutoServiceCard) matches snapshot with custom promotional discount service 1`] = `
+<div>
+  <div
+    class="ega-service-card"
+    data-testid="service-card-EGA-SRV-CERAMIC"
+  >
+    <div
+      class="service-card-header"
+    >
+      <span
+        class="service-category"
+      >
+        Làm đẹp & Chăm sóc xe
+      </span>
+      <span
+        class="hot-badge"
+        data-testid="hot-badge"
+      >
+        NỔI BẬT
+      </span>
+    </div>
+    <h3
+      class="service-name"
+      data-testid="service-name"
+    >
+      Gói Phủ Ceramic 9H Bảo Vệ Sơn Cao Cấp
+    </h3>
+    <div
+      class="service-rating"
+      data-testid="service-rating"
+    >
+      <span
+        class="star-icon"
+      >
+        ★
+      </span>
+      <span
+        class="rating-value"
+      >
+        5.0
+         / 5.0
+      </span>
+    </div>
+    <div
+      class="service-pricing"
+      data-testid="service-pricing"
+    >
+      <span
+        class="promo-price"
+        data-testid="promo-price"
+      >
+        6.500.000
+         đ
+      </span>
+      <span
+        class="original-price"
+        data-testid="original-price"
+      >
+        8.000.000
+         đ
+      </span>
+      <span
+        class="discount-tag"
+        data-testid="discount-tag"
+      >
+        -
+        19
+        %
+      </span>
+    </div>
+    <div
+      class="service-warranty"
+      data-testid="service-warranty"
+    >
+      Bảo hành: 
+      <strong>
+        24
+         tháng
+      </strong>
+       hoặc 
+      <strong>
+        30.000
+         km
+      </strong>
+    </div>
+    <ul
+      class="service-features"
+      data-testid="service-features"
+    >
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Phủ 3 lớp Ceramic 9H độ bóng sâu
+      </li>
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Kháng tia UV, chống ố nước mưa
+      </li>
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Bảo dưỡng định kỳ 6 tháng/lần miễn phí
+      </li>
+    </ul>
+    <button
+      class="btn-detail"
+      data-testid="btn-view-detail"
+      type="button"
+    >
+      Xem chi tiết dịch vụ
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Lab 2 - Requirement (iii): Test Snapshot (AutoServiceCard) matches snapshot with default service prop 1`] = `
+<div>
+  <div
+    class="ega-service-card"
+    data-testid="service-card-EGA-SRV-01"
+  >
+    <div
+      class="service-card-header"
+    >
+      <span
+        class="service-category"
+      >
+        Chăm sóc xe định kỳ
+      </span>
+      <span
+        class="hot-badge"
+        data-testid="hot-badge"
+      >
+        NỔI BẬT
+      </span>
+    </div>
+    <h3
+      class="service-name"
+      data-testid="service-name"
+    >
+      Gói Bảo Dưỡng Cấp Cao & Thay Dầu Castrol
+    </h3>
+    <div
+      class="service-rating"
+      data-testid="service-rating"
+    >
+      <span
+        class="star-icon"
+      >
+        ★
+      </span>
+      <span
+        class="rating-value"
+      >
+        4.9
+         / 5.0
+      </span>
+    </div>
+    <div
+      class="service-pricing"
+      data-testid="service-pricing"
+    >
+      <span
+        class="promo-price"
+        data-testid="promo-price"
+      >
+        1.200.000
+         đ
+      </span>
+      <span
+        class="original-price"
+        data-testid="original-price"
+      >
+        1.500.000
+         đ
+      </span>
+      <span
+        class="discount-tag"
+        data-testid="discount-tag"
+      >
+        -
+        20
+        %
+      </span>
+    </div>
+    <div
+      class="service-warranty"
+      data-testid="service-warranty"
+    >
+      Bảo hành: 
+      <strong>
+        6
+         tháng
+      </strong>
+       hoặc 
+      <strong>
+        10.000
+         km
+      </strong>
+    </div>
+    <ul
+      class="service-features"
+      data-testid="service-features"
+    >
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Kiểm tra toàn diện 32 hạng mục an toàn
+      </li>
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Thay dầu nhớt Castrol Magnatec chính hãng
+      </li>
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Vệ sinh lọc gió động cơ và điều hòa
+      </li>
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Cân chỉnh áp suất lốp 4 bánh
+      </li>
+    </ul>
+    <button
+      class="btn-detail"
+      data-testid="btn-view-detail"
+      type="button"
+    >
+      Xem chi tiết dịch vụ
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Lab 2 - Requirement (iii): Test Snapshot (AutoServiceCard) matches snapshot with non-discounted service (isHot is false and no promotional discount) 1`] = `
+<div>
+  <div
+    class="ega-service-card"
+    data-testid="service-card-EGA-SRV-TIRE-CHECK"
+  >
+    <div
+      class="service-card-header"
+    >
+      <span
+        class="service-category"
+      >
+        Dịch vụ lốp
+      </span>
+    </div>
+    <h3
+      class="service-name"
+      data-testid="service-name"
+    >
+      Kiểm Tra Áp Suất & Cân Mâm Bấm Chì
+    </h3>
+    <div
+      class="service-rating"
+      data-testid="service-rating"
+    >
+      <span
+        class="star-icon"
+      >
+        ★
+      </span>
+      <span
+        class="rating-value"
+      >
+        4.8
+         / 5.0
+      </span>
+    </div>
+    <div
+      class="service-pricing"
+      data-testid="service-pricing"
+    >
+      <span
+        class="promo-price"
+        data-testid="promo-price"
+      >
+        200.000
+         đ
+      </span>
+    </div>
+    <div
+      class="service-warranty"
+      data-testid="service-warranty"
+    >
+      Bảo hành: 
+      <strong>
+        1
+         tháng
+      </strong>
+       hoặc 
+      <strong>
+        1.000
+         km
+      </strong>
+    </div>
+    <ul
+      class="service-features"
+      data-testid="service-features"
+    >
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Cân mâm điện tử chính xác
+      </li>
+      <li
+        class="feature-item"
+      >
+        ✓ 
+        Bơm khí Nitơ tinh khiết
+      </li>
+    </ul>
+    <button
+      class="btn-detail"
+      data-testid="btn-view-detail"
+      type="button"
+    >
+      Xem chi tiết dịch vụ
+    </button>
+  </div>
+</div>
+`;

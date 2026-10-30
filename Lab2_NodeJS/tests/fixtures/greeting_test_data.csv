@@ -1,0 +1,6 @@
+testId,customerName,tier,loyaltyPoints,isWarrantyExpiring,customAnnouncement,expectedGreetingSnippet,expectedTierSnippet,expectedPointsSnippet,expectedWarrantySnippet,expectedAnnouncementSnippet
+TC_GREET_01,Nguyen Van A,VIP,150,true,Giam 10% dip khai truong,"Xin chào, Nguyen Van A!","Hạng thành viên: VIP - Giảm 20%","Điểm tích lũy: 150 điểm","Cảnh báo: Xe của bạn sắp đến hạn bảo dưỡng định kỳ!","Thông báo đặc biệt: Giam 10% dip khai truong"
+TC_GREET_02,Tran Thi B,GOLD,50,false,,"Xin chào, Tran Thi B!","Hạng thành viên: Vàng - Giảm 15%","Điểm tích lũy: 50 điểm","Tình trạng xe: Lịch bảo dưỡng vẫn đang trong thời hạn an toàn.",
+TC_GREET_03,Le Van C,SILVER,0,false,,"Xin chào, Le Van C!","Hạng thành viên: Bạc - Giảm 10%","Điểm tích lũy: 0 điểm","Tình trạng xe: Lịch bảo dưỡng vẫn đang trong thời hạn an toàn.",
+TC_GREET_04,,STANDARD,0,true,,"Xin chào quý khách!","Hạng thành viên: Tiêu chuẩn - Tích điểm","Điểm tích lũy: 0 điểm","Cảnh báo: Xe của bạn sắp đến hạn bảo dưỡng định kỳ!",
+TC_GREET_05,Pham D,UNKNOWN_TIER,20,false,,"Xin chào, Pham D!","Hạng thành viên: Tiêu chuẩn - Tích điểm","Điểm tích lũy: 20 điểm","Tình trạng xe: Lịch bảo dưỡng vẫn đang trong thời hạn an toàn.",

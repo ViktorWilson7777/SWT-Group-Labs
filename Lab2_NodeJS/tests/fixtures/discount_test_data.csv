@@ -1,0 +1,11 @@
+testId,customerTier,baseCost,voucherCode,isFirstTime,hasVatInvoice,expectedDiscountRate,expectedVoucherDiscount,expectedTotalDiscount,expectedIsCapped,expectedVat,expectedFinalCost,expectedError
+TC_DISC_01,VIP,2000000,EGASUPER,false,false,0.20,100000,500000,false,0,1500000,
+TC_DISC_02,GOLD,500000,EGAFREE,true,true,0.15,50000,150000,false,35000,385000,
+TC_DISC_03,SILVER,200000,EGAFREE,false,false,0.10,0,20000,false,0,180000,
+TC_DISC_04,STANDARD,800000,EGASUPER,false,false,0.05,0,40000,false,0,760000,
+TC_DISC_05,STANDARD,100000,UNKNOWN_VOUCHER,false,false,0.05,0,5000,false,0,95000,
+TC_DISC_06,VIP,600000,EGAMEGA,true,false,0.20,300000,300000,true,0,300000,
+TC_DISC_07,GOLD,400000,EGAMEGA,false,false,0.15,0,60000,false,0,340000,
+TC_DISC_08,STANDARD,500000,,false,true,0.05,0,25000,false,47500,522500,
+TC_DISC_ERR_01,VIP,-50000,,,false,false,,,,,,Chi phí dịch vụ không hợp lệ: phải là số lớn hơn 0
+TC_DISC_ERR_02,PLATINUM,500000,,,false,false,,,,,,Hạng thành viên không được hỗ trợ: PLATINUM
