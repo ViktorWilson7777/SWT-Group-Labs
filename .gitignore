@@ -46,4 +46,7 @@
 **/target/maven-archiver/
 **/nbproject/
 **/nb-configuration.xml
+**/*.dump
+**/*.dumpstream
+
 
