@@ -44,3 +44,6 @@
 **/target/generated-test-sources/
 **/target/maven-status/
 **/target/maven-archiver/
+**/nbproject/
+**/nb-configuration.xml
+
