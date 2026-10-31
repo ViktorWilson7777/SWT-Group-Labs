@@ -94,10 +94,10 @@ public class EgaAutocareTest {
 
         // Sử dụng tài khoản demo thử nghiệm đã đăng ký trên hệ thống
         emailInput.clear();
-        emailInput.sendKeys("test_swt_member3@gmail.com");
+        emailInput.sendKeys("linhcampochia@gmail.com");
 
         passwordInput.clear();
-        passwordInput.sendKeys("1234567");
+        passwordInput.sendKeys("03022006Tien!");
 
         // Submit form đăng nhập
         WebElement loginBtn = driver.findElement(By.cssSelector("button.btn-login, button[type='submit']"));
