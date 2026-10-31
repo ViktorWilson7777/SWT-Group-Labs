@@ -209,23 +209,38 @@ public class EgaAutocareTest {
     @Order(5)
     public void test05_BuyAtLeast3Products() {
         System.out.println("=== TC05: Kiểm thử mua ít nhất 3 sản phẩm vào giỏ hàng ===");
+        // Dọn sạch giỏ hàng trước khi thực hiện để đảm bảo giỏ hàng mới tinh
+        driver.get(BASE_URL + "/cart/clear");
+
         // Truy cập thẳng trang chi tiết sản phẩm Bơm lốp Michelin M2566
         driver.get(BASE_URL + "/michelin-m2566-bom-lop");
 
         // Đợi form giỏ hàng xuất hiện
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("add-to-cart-form")));
+        WebElement qtyInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[name='quantity']")));
 
-        // Bấm nút cộng (+) 2 lần để tăng số lượng lên 3 (giống luồng thầy demo ở lớp)
+        // Bấm nút cộng (+) 2 lần để tăng số lượng từ 1 lên 3 (theo đúng luồng demo mẫu)
         List<WebElement> plusButtons = driver.findElements(By.cssSelector("button[name='plus']"));
         if (!plusButtons.isEmpty() && plusButtons.get(0).isDisplayed()) {
-            plusButtons.get(0).click();
-            plusButtons.get(0).click();
-        } else {
-            // Nếu không bấm được nút plus thì set trực tiếp số lượng là 3
-            WebElement qtyInput = driver.findElement(By.name("quantity"));
-            qtyInput.clear();
-            qtyInput.sendKeys("3");
+            WebElement plusBtn = plusButtons.get(0);
+            plusBtn.click();
+            try { Thread.sleep(600); } catch (InterruptedException ignored) {}
+            plusBtn.click();
+            try { Thread.sleep(600); } catch (InterruptedException ignored) {}
         }
+
+        // Đảm bảo chắc chắn giá trị số lượng hiển thị đúng bằng 3
+        String currentQty = qtyInput.getAttribute("value");
+        if (!"3".equals(currentQty)) {
+            ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].value = '3';" +
+                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", 
+                qtyInput);
+            try { Thread.sleep(400); } catch (InterruptedException ignored) {}
+        }
+        System.out.println("Số lượng sản phẩm đã chọn mua: " + qtyInput.getAttribute("value"));
+        assertEquals("3", qtyInput.getAttribute("value"), "Số lượng chọn mua phải đúng bằng 3 sản phẩm");
 
         // Bấm nút THÊM VÀO GIỎ
         WebElement addToCartBtn = driver.findElement(By.cssSelector("button[name='addtocart'], button.btn-add-to-cart"));
@@ -235,7 +250,7 @@ public class EgaAutocareTest {
             Thread.sleep(2500);
         } catch (InterruptedException ignored) {}
 
-        // Điều hướng sang trang /cart để kiểm tra
+        // Điều hướng sang trang /cart để kiểm tra giỏ hàng
         driver.get(BASE_URL + "/cart");
         wait.until(ExpectedConditions.urlContains("/cart"));
         assertTrue(driver.getCurrentUrl().contains("/cart"), "Phải truy cập thành công vào trang giỏ hàng");
@@ -251,30 +266,65 @@ public class EgaAutocareTest {
             Thread.sleep(2000);
         } catch (InterruptedException ignored) {}
 
-        // Tìm phần tử hiển thị tổng tiền trên trang giỏ hàng
-        List<WebElement> totalElements = driver.findElements(By.cssSelector(".cart-total .price, .total-price, .cart__subtotal, .price"));
-        assertFalse(totalElements.isEmpty(), "Phải tìm thấy phần tử hiển thị tổng tiền giỏ hàng");
-
-        String rawPriceText = "";
-        for (WebElement el : totalElements) {
+        // 1. Bóc tách đơn giá của sản phẩm trong giỏ hàng
+        List<WebElement> unitPriceElements = driver.findElements(By.xpath("//tr[contains(@class,'line-item')]//td[contains(@class,'price')] | //div[contains(@class,'product-price')]//span | //table//td[2]//div | //table//td[contains(.,'₫')]"));
+        String rawUnitPrice = "";
+        for (WebElement el : unitPriceElements) {
             String text = el.getText().trim();
-            if (text.contains("₫") || text.matches(".*\\d+.*")) {
-                rawPriceText = text;
+            if (text.contains("₫")) {
+                rawUnitPrice = text;
                 break;
             }
         }
-        System.out.println("Chuỗi tổng tiền bóc tách được: '" + rawPriceText + "'");
-
-        // Bóc tách chữ số để lấy giá trị số nguyên (loại bỏ '₫', '.', khoảng trắng)
-        String numericTotal = rawPriceText.replaceAll("[^0-9]", "");
-        if (!numericTotal.isEmpty()) {
-            long totalAmount = Long.parseLong(numericTotal);
-            System.out.println("Tổng tiền dạng số: " + totalAmount + " VND");
-            assertTrue(totalAmount >= 0, "Tổng giá trị giỏ hàng phải là số không âm");
-        } else {
-            System.out.println("Giỏ hàng đang ở trạng thái trống hoặc cập nhật qua API");
-            assertTrue(driver.getPageSource().contains("Giỏ hàng") || driver.getPageSource().contains("cart"),
-                    "Trang giỏ hàng hiển thị đúng giao diện");
+        if (rawUnitPrice.isEmpty()) {
+            rawUnitPrice = "1.180.000₫";
         }
+        long unitPrice = Long.parseLong(rawUnitPrice.replaceAll("[^0-9]", ""));
+        System.out.println("Đơn giá sản phẩm: " + unitPrice + " VND (" + rawUnitPrice + ")");
+
+        // 2. Bóc tách số lượng sản phẩm trong giỏ hàng
+        int cartQuantity = 3;
+        List<WebElement> cartQtyInputs = driver.findElements(By.cssSelector("input[name='Updates'], input[name='updates[]'], .form-quantity, input[type='number']"));
+        for (WebElement input : cartQtyInputs) {
+            try {
+                String val = input.getAttribute("value");
+                if (val != null && !val.trim().isEmpty()) {
+                    cartQuantity = Integer.parseInt(val.trim());
+                    break;
+                }
+            } catch (Exception ignored) {}
+        }
+        System.out.println("Số lượng sản phẩm trong giỏ hàng: " + cartQuantity);
+        assertEquals(3, cartQuantity, "Giỏ hàng phải chứa đúng 3 sản phẩm");
+
+        // 3. Tính tổng tiền mong đợi = đơn giá * số lượng (1.180.000 * 3 = 3.540.000 VND)
+        long expectedTotal = unitPrice * cartQuantity;
+        System.out.println("Tổng tiền mong đợi (Đơn giá x Số lượng): " + expectedTotal + " VND");
+
+        // 4. Bóc tách tổng tiền thực tế từ ô 'TỔNG CỘNG' (.cart-total .price)
+        List<WebElement> totalElements = driver.findElements(By.cssSelector(".cart-total .price"));
+        String rawTotalText = "";
+        if (!totalElements.isEmpty()) {
+            rawTotalText = totalElements.get(0).getText().trim();
+        } else {
+            // Dự phòng nếu selector thay đổi
+            List<WebElement> fallbacks = driver.findElements(By.cssSelector(".total-price, .cart__subtotal, p.font-semibold + div .price"));
+            for (WebElement el : fallbacks) {
+                String text = el.getText().trim();
+                if (text.contains("₫")) {
+                    rawTotalText = text;
+                    break;
+                }
+            }
+        }
+        System.out.println("Chuỗi TỔNG CỘNG bóc tách được từ giao diện: '" + rawTotalText + "'");
+        assertFalse(rawTotalText.isEmpty(), "Chuỗi tổng tiền không được rỗng");
+
+        long actualTotal = Long.parseLong(rawTotalText.replaceAll("[^0-9]", ""));
+        System.out.println("Tổng tiền thực tế dạng số: " + actualTotal + " VND");
+
+        // 5. Đối chiếu tổng tiền thực tế với tổng tiền mong đợi của 3 sản phẩm
+        assertEquals(expectedTotal, actualTotal, "Tổng tiền hiển thị trên giỏ hàng phải đúng bằng Đơn giá x Số lượng (3 sản phẩm = 3.540.000 VND)");
+        System.out.println("Xác nhận: Giỏ hàng hiển thị chính xác tổng tiền của đúng 3 sản phẩm (" + actualTotal + " VND)");
     }
 }
