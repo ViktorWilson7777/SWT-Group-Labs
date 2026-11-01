@@ -1,0 +1,7 @@
+testCaseId,distanceKm,amountAfterDiscount,expectedShippingFee
+UT_L1_05_01,0.0,500000.0,0.0
+UT_L1_05_02,15.0,2000000.0,0.0
+UT_L1_05_03,8.0,500000.0,30000.0
+UT_L1_05_04,10.0,1500000.0,30000.0
+UT_L1_05_05,14.0,500000.0,50000.0
+

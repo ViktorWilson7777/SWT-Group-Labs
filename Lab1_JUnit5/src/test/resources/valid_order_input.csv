@@ -1,0 +1,10 @@
+testCaseId,itemQuantity,unitPrice,distanceKm,expectedValid
+UT_L1_01_01,0,500000.0,5.0,false
+UT_L1_01_02,-2,500000.0,5.0,false
+UT_L1_01_03,101,500000.0,5.0,false
+UT_L1_01_04,2,0.0,5.0,false
+UT_L1_01_05,2,-10000.0,5.0,false
+UT_L1_01_06,2,500000.0,-1.0,false
+UT_L1_01_07,1,500000.0,0.0,true
+UT_L1_01_08,100,1180000.0,15.0,true
+

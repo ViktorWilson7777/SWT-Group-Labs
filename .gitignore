@@ -44,6 +44,7 @@
 **/target/generated-test-sources/
 **/target/maven-status/
 **/target/maven-archiver/
+**/target/jacoco.exec
 **/nbproject/
 **/nb-configuration.xml
 **/*.dump

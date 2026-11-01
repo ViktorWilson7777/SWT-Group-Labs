@@ -1,0 +1,6 @@
+testCaseId,taxableAmount,requireVatInvoice,expectedVat
+UT_L1_06_01,0.0,true,0.0
+UT_L1_06_02,-50000.0,true,0.0
+UT_L1_06_03,1000000.0,true,80000.0
+UT_L1_06_04,1000000.0,false,0.0
+

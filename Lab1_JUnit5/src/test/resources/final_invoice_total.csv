@@ -1,0 +1,7 @@
+testCaseId,itemQuantity,unitPrice,servicePackage,memberTier,distanceKm,requireVatInvoice,expectedFinalTotal
+UT_L1_07_01,0,500000.0,STANDARD,REGULAR,5.0,false,-1.0
+UT_L1_07_02,2,-100000.0,STANDARD,GOLD,5.0,true,-1.0
+UT_L1_07_03,2,500000.0,STANDARD,GOLD,5.0,true,1157520.0
+UT_L1_07_04,1,800000.0,NONE,REGULAR,12.0,false,840000.0
+UT_L1_07_05,4,3000000.0,PREMIUM,VIP,15.0,true,10816000.0
+
