@@ -50,4 +50,8 @@
 **/*.dump
 **/*.dumpstream
 
-
+# Chặn các file tài liệu báo cáo, ngữ cảnh AI và build target trong thư mục RBL:
+RBL_DeTai3_IntegrationTesting/*.docx
+RBL_DeTai3_IntegrationTesting/*.csv
+RBL_DeTai3_IntegrationTesting/*.xlsx
+RBL_DeTai3_IntegrationTesting/target/
