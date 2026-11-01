@@ -10,7 +10,6 @@
 !/Lab2_NodeJS/
 !/Lab3_Selenium_EGA_Autocare/
 !/Lab4_ISTQB_TestPlan/
-!/RBL_DeTai3_IntegrationTesting/
 
 # =====================================================================
 # Chặn các file rác, file nén, thư viện nặng bên trong 4 thư mục Lab:
@@ -49,9 +48,3 @@
 **/nb-configuration.xml
 **/*.dump
 **/*.dumpstream
-
-# Chặn các file tài liệu báo cáo, ngữ cảnh AI và build target trong thư mục RBL:
-RBL_DeTai3_IntegrationTesting/*.docx
-RBL_DeTai3_IntegrationTesting/*.csv
-RBL_DeTai3_IntegrationTesting/*.xlsx
-RBL_DeTai3_IntegrationTesting/target/
