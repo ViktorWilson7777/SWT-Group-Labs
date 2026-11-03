@@ -39,7 +39,7 @@ public class EgaAutocareTest {
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--disable-notifications");
         options.addArguments("--start-maximized");
-        
+
         // Hỗ trợ chạy headless nếu truyền cờ -Dheadless=true
         if (Boolean.getBoolean("headless")) {
             options.addArguments("--headless=new");
@@ -68,7 +68,7 @@ public class EgaAutocareTest {
     public void test01_AccessWeb() {
         System.out.println("=== TC01: Kiểm thử truy cập website EGA Autocare ===");
         driver.get(BASE_URL);
-        
+
         String title = driver.getTitle();
         System.out.println("Tiêu đề trang: " + title);
         assertTrue(title.contains("EGA Autocare") || title.toLowerCase().contains("autocare"),
@@ -84,45 +84,39 @@ public class EgaAutocareTest {
     @Order(2)
     public void test02_LoginSuccess() {
         System.out.println("=== TC02: Kiểm thử đăng nhập tài khoản hợp lệ ===");
-        // Đảm bảo không dính session cũ trước khi đăng nhập
         driver.manage().deleteAllCookies();
         driver.get(BASE_URL + "/account/login");
 
-        // Đợi form đăng nhập xuất hiện
         WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("customer_email")));
         WebElement passwordInput = driver.findElement(By.id("customer_password"));
 
-        // Sử dụng tài khoản demo thử nghiệm đã đăng ký trên hệ thống
         emailInput.clear();
         emailInput.sendKeys("linhcampochia@gmail.com");
 
         passwordInput.clear();
         passwordInput.sendKeys("03022006Tien!");
 
-        // Submit form đăng nhập
-        WebElement loginBtn = driver.findElement(By.cssSelector("button.btn-login, button[type='submit']"));
+        // Click đúng nút Đăng nhập nằm trong form #customer_login
+        WebElement loginBtn = driver.findElement(By.cssSelector("#customer_login button.btn-login"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginBtn);
 
-        // Chờ phản hồi từ máy chủ
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ignored) {}
+        // Đợi hệ thống chuyển hướng sang trang tài khoản khách hàng (/account)
+        wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/account/login")));
 
         String currentUrl = driver.getCurrentUrl();
-        System.out.println("URL sau khi đăng nhập: " + currentUrl);
-        // Trường hợp tài khoản hợp lệ được chuyển sang /account hoặc giữ phiên làm việc
-        assertTrue(currentUrl.contains("/account") || currentUrl.contains("ega-autocare.mysapo.net"),
-                "Hệ thống điều hướng hợp lệ sau khi gửi form đăng nhập");
+        String pageSource = driver.getPageSource();
+        System.out.println("URL sau khi đăng nhập thành công: " + currentUrl);
 
-        // Đăng xuất và xóa session để chuẩn bị cho test case tiếp theo
-        driver.manage().deleteAllCookies();
+        assertFalse(currentUrl.contains("/account/login"),
+                "Sau khi đăng nhập đúng phải thoát khỏi trang /account/login");
+        assertTrue(currentUrl.contains("/account") && pageSource.contains("linhcampochia@gmail.com"),
+                "Trang tài khoản phải hiển thị đúng email khách hàng đã đăng nhập");
     }
 
     @Test
     @Order(3)
     public void test03_LoginFail_Unregistered() {
         System.out.println("=== TC03: Kiểm thử đăng nhập thất bại với tài khoản chưa đăng ký ===");
-        // Đảm bảo trạng thái đã đăng xuất để trang /account/login không bị redirect sang /account
         driver.manage().deleteAllCookies();
         driver.get(BASE_URL + "/account/logout");
         driver.get(BASE_URL + "/account/login");
@@ -130,25 +124,29 @@ public class EgaAutocareTest {
         WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("customer_email")));
         WebElement passwordInput = driver.findElement(By.id("customer_password"));
 
-        // Nhập email ngẫu nhiên chưa đăng ký
+        String unregisteredEmail = "unregistered_user_" + System.currentTimeMillis() + "@gmail.com";
         emailInput.clear();
-        emailInput.sendKeys("unregistered_user_" + System.currentTimeMillis() + "@gmail.com");
+        emailInput.sendKeys(unregisteredEmail);
 
         passwordInput.clear();
         passwordInput.sendKeys("WrongPassword123!");
 
-        WebElement loginBtn = driver.findElement(By.cssSelector("button.btn-login, button[type='submit']"));
+        WebElement loginBtn = driver.findElement(By.cssSelector("#customer_login button.btn-login"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginBtn);
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ignored) {}
-
-        // Xác nhận người dùng không được đăng nhập vào /account và vẫn ở trang login hoặc có báo lỗi
+        // Chờ thông báo lỗi xuất hiện trong form #customer_login
+        WebElement errorAlert = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#customer_login .text-error, #customer_login .alert")));
+        String errorText = errorAlert.getText().trim();
         String currentUrl = driver.getCurrentUrl();
+
         System.out.println("URL sau khi đăng nhập sai: " + currentUrl);
-        assertTrue(currentUrl.contains("/account/login") || !currentUrl.endsWith("/account"),
-                "Đăng nhập sai phải bị chặn không cho vào trang tài khoản");
+        System.out.println("Thông báo lỗi hiển thị: " + errorText);
+
+        assertTrue(currentUrl.contains("/account/login"),
+                "Đăng nhập sai phải giữ người dùng ở lại trang /account/login");
+        assertTrue(errorText.contains("Thông tin đăng nhập không chính xác"),
+                "Phải hiển thị thông báo 'Thông tin đăng nhập không chính xác.'");
     }
 
     @Test
@@ -157,7 +155,6 @@ public class EgaAutocareTest {
         System.out.println("=== TC04: Kiểm thử tính năng tìm kiếm sản phẩm ===");
         driver.get(BASE_URL);
 
-        // Tìm kiếm trên website EGA Autocare
         List<WebElement> searchInputs = driver.findElements(By.name("query"));
         boolean searched = false;
         for (WebElement input : searchInputs) {
@@ -173,7 +170,6 @@ public class EgaAutocareTest {
         }
 
         if (!searched) {
-            // Trường hợp ô tìm kiếm nằm trong search-drawer ẩn
             List<WebElement> searchTriggers = driver.findElements(By.cssSelector("[data-portal='#search-drawer'], .search-bar, a[href*='search']"));
             if (!searchTriggers.isEmpty()) {
                 ((JavascriptExecutor) driver).executeScript("arguments[0].click();", searchTriggers.get(0));
@@ -190,15 +186,16 @@ public class EgaAutocareTest {
             driver.get(BASE_URL + "/search?query=b%C6%A1m+l%E1%BB%91p");
         }
 
-        // Chờ chuyển hướng sang trang kết quả tìm kiếm
         wait.until(ExpectedConditions.urlContains("/search"));
         String currentUrl = driver.getCurrentUrl();
         System.out.println("URL trang kết quả tìm kiếm: " + currentUrl);
-        assertTrue(currentUrl.contains("query=") || currentUrl.contains("q="), "URL phải chứa tham số query tìm kiếm");
+        assertTrue(currentUrl.contains("query=") || currentUrl.contains("q="),
+                "URL phải chứa tham số query tìm kiếm");
 
-        // Xác nhận có hiển thị nội dung kết quả tìm kiếm
         List<WebElement> results = driver.findElements(By.cssSelector(".product-item, .product-card, .search-result, h1, h2, .section-heading"));
-        assertFalse(results.isEmpty(), "Trang tìm kiếm phải hiển thị kết quả hoặc thông báo");
+        assertFalse(results.isEmpty(), "Trang tìm kiếm phải hiển thị danh sách sản phẩm kết quả");
+        assertTrue(driver.getPageSource().toLowerCase().contains("bơm lốp"),
+                "Kết quả tìm kiếm phải chứa sản phẩm liên quan đến từ khóa 'bơm lốp'");
     }
 
     // ==========================================
@@ -209,17 +206,13 @@ public class EgaAutocareTest {
     @Order(5)
     public void test05_BuyAtLeast3Products() {
         System.out.println("=== TC05: Kiểm thử mua ít nhất 3 sản phẩm vào giỏ hàng ===");
-        // Dọn sạch giỏ hàng trước khi thực hiện để đảm bảo giỏ hàng mới tinh
         driver.get(BASE_URL + "/cart/clear");
 
-        // Truy cập thẳng trang chi tiết sản phẩm Bơm lốp Michelin M2566
         driver.get(BASE_URL + "/michelin-m2566-bom-lop");
 
-        // Đợi form giỏ hàng xuất hiện
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("add-to-cart-form")));
         WebElement qtyInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[name='quantity']")));
 
-        // Bấm nút cộng (+) 2 lần để tăng số lượng từ 1 lên 3 (theo đúng luồng demo mẫu)
         List<WebElement> plusButtons = driver.findElements(By.cssSelector("button[name='plus']"));
         if (!plusButtons.isEmpty() && plusButtons.get(0).isDisplayed()) {
             WebElement plusBtn = plusButtons.get(0);
@@ -229,20 +222,18 @@ public class EgaAutocareTest {
             try { Thread.sleep(600); } catch (InterruptedException ignored) {}
         }
 
-        // Đảm bảo chắc chắn giá trị số lượng hiển thị đúng bằng 3
         String currentQty = qtyInput.getAttribute("value");
         if (!"3".equals(currentQty)) {
             ((JavascriptExecutor) driver).executeScript(
                 "arguments[0].value = '3';" +
                 "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
-                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", 
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
                 qtyInput);
             try { Thread.sleep(400); } catch (InterruptedException ignored) {}
         }
         System.out.println("Số lượng sản phẩm đã chọn mua: " + qtyInput.getAttribute("value"));
         assertEquals("3", qtyInput.getAttribute("value"), "Số lượng chọn mua phải đúng bằng 3 sản phẩm");
 
-        // Bấm nút THÊM VÀO GIỎ
         WebElement addToCartBtn = driver.findElement(By.cssSelector("button[name='addtocart'], button.btn-add-to-cart"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCartBtn);
 
@@ -250,7 +241,6 @@ public class EgaAutocareTest {
             Thread.sleep(2500);
         } catch (InterruptedException ignored) {}
 
-        // Điều hướng sang trang /cart để kiểm tra giỏ hàng
         driver.get(BASE_URL + "/cart");
         wait.until(ExpectedConditions.urlContains("/cart"));
         assertTrue(driver.getCurrentUrl().contains("/cart"), "Phải truy cập thành công vào trang giỏ hàng");
@@ -307,7 +297,6 @@ public class EgaAutocareTest {
         if (!totalElements.isEmpty()) {
             rawTotalText = totalElements.get(0).getText().trim();
         } else {
-            // Dự phòng nếu selector thay đổi
             List<WebElement> fallbacks = driver.findElements(By.cssSelector(".total-price, .cart__subtotal, p.font-semibold + div .price"));
             for (WebElement el : fallbacks) {
                 String text = el.getText().trim();
