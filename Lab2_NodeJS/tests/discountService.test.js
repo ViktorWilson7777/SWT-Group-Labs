@@ -94,7 +94,7 @@ describe('Lab 2 - Requirement (iv): Test Hàm có điều kiện if-else (discou
 
     test('should throw error for unsupported customerTier name', () => {
       expect(() => calculateServiceInvoice({ baseCost: 500000, customerTier: 'DIAMOND' }))
-        .toThrow('Hạng thành viên không được hỗ trợ: DIAMOND');
+        .toThrow('Hạng thành viên không hợp lệ: DIAMOND');
     });
 
     test('should handle voucherCode when undefined or non-string gracefully', () => {

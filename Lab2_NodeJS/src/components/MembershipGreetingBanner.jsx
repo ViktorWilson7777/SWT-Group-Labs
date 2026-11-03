@@ -14,7 +14,7 @@ export default function MembershipGreetingBanner({
 }) {
   // 1. Render string for greeting
   let greetingText = '';
-  if (customerName && customerName.trim().length > 0) {
+  if (customerName && customerName.trim() !== '') {
     greetingText = `Xin chào, ${customerName.trim()}! Chào mừng bạn đến với EGA Autocare.`;
   } else {
     greetingText = 'Xin chào quý khách! Chào mừng bạn đến với EGA Autocare.';
@@ -50,6 +50,8 @@ export default function MembershipGreetingBanner({
     warrantyAlertText = 'Tình trạng xe: Lịch bảo dưỡng vẫn đang trong thời hạn an toàn.';
   }
 
+  const hasCustomAnnouncement = Boolean(customAnnouncement && customAnnouncement.trim() !== '');
+
   return (
     <div className="ega-membership-banner" data-testid="membership-banner">
       <h2 data-testid="greeting-header">{greetingText}</h2>
@@ -65,9 +67,9 @@ export default function MembershipGreetingBanner({
       >
         {warrantyAlertText}
       </div>
-      {customAnnouncement && (
+      {hasCustomAnnouncement && (
         <div className="custom-announcement" data-testid="custom-announcement">
-          {`Thông báo đặc biệt: ${customAnnouncement}`}
+          {`Thông báo đặc biệt: ${customAnnouncement.trim()}`}
         </div>
       )}
     </div>

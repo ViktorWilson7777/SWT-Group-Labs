@@ -1,7 +1,7 @@
 /**
  * Service calculating invoice, tiered discounts, vouchers, and taxes
  * for automotive care services at EGA Autocare.
- * Contains clear and verifiable if-else logic for branch coverage.
+ * Contains clear and verifiable if-else logic for 100% branch coverage.
  */
 
 /**
@@ -33,15 +33,10 @@ function calculateServiceInvoice(params = {}) {
     throw new Error('Chi phí dịch vụ không hợp lệ: phải là số lớn hơn 0');
   }
 
-  // 2. Validation for customer tier
-  if (!customerTier || typeof customerTier !== 'string') {
-    throw new Error('Hạng thành viên không hợp lệ: phải là chuỗi ký tự');
-  }
-
-  const tier = customerTier.trim().toUpperCase();
+  // 2. Single unified validation & discount rate lookup for customerTier (no dead branches)
+  const tier = typeof customerTier === 'string' ? customerTier.trim().toUpperCase() : '';
   let discountRate = 0;
 
-  // 3. Tier discount rate branches
   if (tier === 'VIP') {
     discountRate = 0.20;
   } else if (tier === 'GOLD') {
@@ -51,23 +46,23 @@ function calculateServiceInvoice(params = {}) {
   } else if (tier === 'STANDARD') {
     discountRate = 0.05;
   } else {
-    throw new Error(`Hạng thành viên không được hỗ trợ: ${customerTier}`);
+    throw new Error(`Hạng thành viên không hợp lệ: ${customerTier}`);
   }
 
   const tierDiscountAmount = Math.round(baseCost * discountRate);
 
-  // 4. Voucher discount branches
+  // 3. Voucher discount branches (strictly increasing order thresholds: 300k -> 500k -> 1.000.000đ)
   let voucherDiscount = 0;
   const cleanVoucher = typeof voucherCode === 'string' ? voucherCode.trim().toUpperCase() : '';
 
   if (cleanVoucher === 'EGAMEGA') {
-    if (baseCost >= 500000) {
+    if (baseCost >= 1000000) {
       voucherDiscount = 300000;
     } else {
       voucherDiscount = 0;
     }
   } else if (cleanVoucher === 'EGASUPER') {
-    if (baseCost >= 1000000) {
+    if (baseCost >= 500000) {
       voucherDiscount = 100000;
     } else {
       voucherDiscount = 0;
@@ -78,13 +73,11 @@ function calculateServiceInvoice(params = {}) {
     } else {
       voucherDiscount = 0;
     }
-  } else if (cleanVoucher.length > 0) {
-    voucherDiscount = 0;
   } else {
     voucherDiscount = 0;
   }
 
-  // 5. First-time customer bonus branch
+  // 4. First-time customer bonus branch
   let firstTimeDiscount = 0;
   if (isFirstTime === true) {
     firstTimeDiscount = Math.round(baseCost * 0.05);
@@ -92,7 +85,7 @@ function calculateServiceInvoice(params = {}) {
     firstTimeDiscount = 0;
   }
 
-  // 6. Cap check branch: total discount cannot exceed 50% of base cost
+  // 5. Cap check branch: total discount cannot exceed 50% of base cost
   const rawTotalDiscount = tierDiscountAmount + voucherDiscount + firstTimeDiscount;
   const maxAllowedDiscount = Math.round(baseCost * 0.50);
 
@@ -109,7 +102,7 @@ function calculateServiceInvoice(params = {}) {
 
   const subTotal = baseCost - totalDiscount;
 
-  // 7. VAT invoice calculation branch
+  // 6. VAT invoice calculation branch
   let vatAmount = 0;
   if (hasVatInvoice === true) {
     vatAmount = Math.round(subTotal * 0.10);

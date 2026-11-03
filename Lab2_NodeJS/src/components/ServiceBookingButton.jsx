@@ -33,8 +33,9 @@ export default function ServiceBookingButton({
 
     if (typeof onBookingSuccess === 'function') {
       onBookingSuccess({
-        serviceName,
+        bookingId: bookingCode,
         bookingCode,
+        serviceName,
         remainingSlots: nextSlots
       });
     }

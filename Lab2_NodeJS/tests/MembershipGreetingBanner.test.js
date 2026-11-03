@@ -67,11 +67,12 @@ describe('Lab 2 - Requirement (ii): Test Render String (MembershipGreetingBanner
       expect(screen.queryByTestId('custom-announcement')).toBeNull();
     });
 
-    test('renders generic greeting when customerName contains only whitespaces', () => {
-      render(<MembershipGreetingBanner customerName="    " />);
+    test('renders generic greeting and hides announcement when strings contain only whitespaces', () => {
+      render(<MembershipGreetingBanner customerName="    " customAnnouncement="   " />);
       expect(screen.getByTestId('greeting-header')).toHaveTextContent(
         'Xin chào quý khách! Chào mừng bạn đến với EGA Autocare.'
       );
+      expect(screen.queryByTestId('custom-announcement')).toBeNull();
     });
 
     test('renders zero-points string when loyaltyPoints is not a number or negative', () => {

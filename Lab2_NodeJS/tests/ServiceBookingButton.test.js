@@ -38,8 +38,9 @@ describe('Lab 2 - Requirement (i): Test Button (ServiceBookingButton)', () => {
     expect(status).toHaveTextContent('Đặt lịch thành công cho Thay nhớt Castrol! Mã đặt: EGA-1001');
     expect(handleSuccess).toHaveBeenCalledTimes(1);
     expect(handleSuccess).toHaveBeenCalledWith({
-      serviceName: 'Thay nhớt Castrol',
+      bookingId: 'EGA-1001',
       bookingCode: 'EGA-1001',
+      serviceName: 'Thay nhớt Castrol',
       remainingSlots: 1
     });
 
