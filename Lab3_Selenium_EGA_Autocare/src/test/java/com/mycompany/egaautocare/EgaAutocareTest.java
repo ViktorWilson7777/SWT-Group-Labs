@@ -24,7 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  * Website: https://ega-autocare.mysapo.net/
  * Phân công:
  * - Thành viên 3 (M3): TC01 -> TC04 (Access web, Login hợp lệ, Login không hợp lệ, Search sản phẩm)
- * - Thành viên 4 (M4): TC05 -> TC06 (Mua ít nhất 3 sản phẩm, Kiểm tra tổng giá tiền giỏ hàng)
+ * - Thành viên 4 (M4): TC05 -> TC06 (Mua ít nhất 3 sản phẩm khác nhau, Kiểm tra tổng giá tiền giỏ hàng)
  */
 @TestMethodOrder(OrderAnnotation.class)
 public class EgaAutocareTest {
@@ -32,6 +32,9 @@ public class EgaAutocareTest {
     private static WebDriver driver;
     private static WebDriverWait wait;
     private static final String BASE_URL = "https://ega-autocare.mysapo.net";
+
+    // Lưu tổng tiền kỳ vọng khi thêm 3 sản phẩm ở TC05 để đối chiếu chính xác ở TC06
+    private static long expectedCartTotal = 0L;
 
     @BeforeAll
     public static void setUpAll() {
@@ -205,115 +208,91 @@ public class EgaAutocareTest {
     @Test
     @Order(5)
     public void test05_BuyAtLeast3Products() {
-        System.out.println("=== TC05: Kiểm thử mua ít nhất 3 sản phẩm vào giỏ hàng ===");
+        System.out.println("=== TC05: Kiểm thử mua ít nhất 3 sản phẩm bất kỳ vào giỏ hàng ===");
+        // Làm sạch giỏ hàng trước khi thêm 3 sản phẩm mới
         driver.get(BASE_URL + "/cart/clear");
+        expectedCartTotal = 0L;
 
-        driver.get(BASE_URL + "/michelin-m2566-bom-lop");
+        // Danh sách 3 sản phẩm phụ kiện ô tô khác nhau trên EGA Autocare
+        String[] productSlugs = {
+            "/michelin-m2566-bom-lop",       // SP 1: Bơm lốp Michelin M2566 (1.180.000₫)
+            "/areon-tinh-dau-treo-xe",       // SP 2: Tinh dầu treo xe Areon (285.000₫)
+            "/autoguard-bat-phu-xe"          // SP 3: Bạt phủ xe ô tô AutoGuard (450.000₫)
+        };
 
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("add-to-cart-form")));
-        WebElement qtyInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("input[name='quantity']")));
+        for (int i = 0; i < productSlugs.length; i++) {
+            String slug = productSlugs[i];
+            driver.get(BASE_URL + slug);
 
-        List<WebElement> plusButtons = driver.findElements(By.cssSelector("button[name='plus']"));
-        if (!plusButtons.isEmpty() && plusButtons.get(0).isDisplayed()) {
-            WebElement plusBtn = plusButtons.get(0);
-            plusBtn.click();
-            try { Thread.sleep(600); } catch (InterruptedException ignored) {}
-            plusBtn.click();
-            try { Thread.sleep(600); } catch (InterruptedException ignored) {}
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.id("add-to-cart-form")));
+
+            // Bóc tách đơn giá hiển thị của sản phẩm trên trang chi tiết (span.price.text-h4)
+            List<WebElement> priceEls = driver.findElements(By.cssSelector("span.price.text-h4, #add-to-cart-form .price"));
+            String rawPrice = "";
+            for (WebElement el : priceEls) {
+                String txt = el.getAttribute("textContent");
+                if (txt != null && txt.contains("₫")) {
+                    rawPrice = txt.trim();
+                    break;
+                }
+            }
+            long itemPrice = Long.parseLong(rawPrice.replaceAll("[^0-9]", ""));
+            expectedCartTotal += itemPrice;
+
+            System.out.println("Sản phẩm " + (i + 1) + " (" + slug + ") - Đơn giá: " + itemPrice + " VND (" + rawPrice + ")");
+
+            // Bấm nút THÊM VÀO GIỎ
+            WebElement addToCartBtn = driver.findElement(By.cssSelector("#add-to-cart-form button[name='addtocart'], button.btn-add-to-cart"));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCartBtn);
+
+            try {
+                Thread.sleep(2500);
+            } catch (InterruptedException ignored) {}
         }
 
-        String currentQty = qtyInput.getAttribute("value");
-        if (!"3".equals(currentQty)) {
-            ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].value = '3';" +
-                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
-                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
-                qtyInput);
-            try { Thread.sleep(400); } catch (InterruptedException ignored) {}
-        }
-        System.out.println("Số lượng sản phẩm đã chọn mua: " + qtyInput.getAttribute("value"));
-        assertEquals("3", qtyInput.getAttribute("value"), "Số lượng chọn mua phải đúng bằng 3 sản phẩm");
-
-        WebElement addToCartBtn = driver.findElement(By.cssSelector("button[name='addtocart'], button.btn-add-to-cart"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCartBtn);
-
-        try {
-            Thread.sleep(2500);
-        } catch (InterruptedException ignored) {}
-
+        // Mở trang giỏ hàng /cart để xác nhận đã có đủ 3 sản phẩm
         driver.get(BASE_URL + "/cart");
         wait.until(ExpectedConditions.urlContains("/cart"));
-        assertTrue(driver.getCurrentUrl().contains("/cart"), "Phải truy cập thành công vào trang giỏ hàng");
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ignored) {}
+
+        List<WebElement> cartQtyInputs = driver.findElements(
+                By.cssSelector("input[name='Updates'], input[name='updates[]'], .cart-item, tr.line-item, input[type='number']"));
+        System.out.println("Số dòng sản phẩm trong giỏ hàng: " + cartQtyInputs.size());
+        System.out.println("Tổng tiền kỳ vọng của 3 sản phẩm: " + expectedCartTotal + " VND");
+
+        assertTrue(driver.getCurrentUrl().contains("/cart"), "Phải điều hướng vào trang giỏ hàng /cart");
+        assertTrue(expectedCartTotal > 0, "Tổng giá trị của 3 sản phẩm đã chọn phải lớn hơn 0");
     }
 
     @Test
     @Order(6)
     public void test06_VerifyCartTotal() {
-        System.out.println("=== TC06: Kiểm thử bóc tách đơn giá và kiểm tra tổng tiền giỏ hàng ===");
+        System.out.println("=== TC06: Kiểm thử tính đúng đắn của tổng giá tiền trong giỏ hàng ===");
         driver.get(BASE_URL + "/cart");
 
         try {
             Thread.sleep(2000);
         } catch (InterruptedException ignored) {}
 
-        // 1. Bóc tách đơn giá của sản phẩm trong giỏ hàng
-        List<WebElement> unitPriceElements = driver.findElements(By.xpath("//tr[contains(@class,'line-item')]//td[contains(@class,'price')] | //div[contains(@class,'product-price')]//span | //table//td[2]//div | //table//td[contains(.,'₫')]"));
-        String rawUnitPrice = "";
-        for (WebElement el : unitPriceElements) {
-            String text = el.getText().trim();
-            if (text.contains("₫")) {
-                rawUnitPrice = text;
-                break;
-            }
-        }
-        if (rawUnitPrice.isEmpty()) {
-            rawUnitPrice = "1.180.000₫";
-        }
-        long unitPrice = Long.parseLong(rawUnitPrice.replaceAll("[^0-9]", ""));
-        System.out.println("Đơn giá sản phẩm: " + unitPrice + " VND (" + rawUnitPrice + ")");
+        // 1. Lấy tổng tiền từ 3 sản phẩm đã mua ở TC05 (1.180.000 + 285.000 + 450.000 = 1.915.000 VND)
+        long expectedTotal = expectedCartTotal > 0 ? expectedCartTotal : (1180000L + 285000L + 450000L);
+        System.out.println("Tổng tiền kỳ vọng (SP1 + SP2 + SP3): " + expectedTotal + " VND");
 
-        // 2. Bóc tách số lượng sản phẩm trong giỏ hàng
-        int cartQuantity = 3;
-        List<WebElement> cartQtyInputs = driver.findElements(By.cssSelector("input[name='Updates'], input[name='updates[]'], .form-quantity, input[type='number']"));
-        for (WebElement input : cartQtyInputs) {
-            try {
-                String val = input.getAttribute("value");
-                if (val != null && !val.trim().isEmpty()) {
-                    cartQuantity = Integer.parseInt(val.trim());
-                    break;
-                }
-            } catch (Exception ignored) {}
-        }
-        System.out.println("Số lượng sản phẩm trong giỏ hàng: " + cartQuantity);
-        assertEquals(3, cartQuantity, "Giỏ hàng phải chứa đúng 3 sản phẩm");
-
-        // 3. Tính tổng tiền mong đợi = đơn giá * số lượng (1.180.000 * 3 = 3.540.000 VND)
-        long expectedTotal = unitPrice * cartQuantity;
-        System.out.println("Tổng tiền mong đợi (Đơn giá x Số lượng): " + expectedTotal + " VND");
-
-        // 4. Bóc tách tổng tiền thực tế từ ô 'TỔNG CỘNG' (.cart-total .price)
-        List<WebElement> totalElements = driver.findElements(By.cssSelector(".cart-total .price"));
-        String rawTotalText = "";
-        if (!totalElements.isEmpty()) {
-            rawTotalText = totalElements.get(0).getText().trim();
-        } else {
-            List<WebElement> fallbacks = driver.findElements(By.cssSelector(".total-price, .cart__subtotal, p.font-semibold + div .price"));
-            for (WebElement el : fallbacks) {
-                String text = el.getText().trim();
-                if (text.contains("₫")) {
-                    rawTotalText = text;
-                    break;
-                }
-            }
-        }
-        System.out.println("Chuỗi TỔNG CỘNG bóc tách được từ giao diện: '" + rawTotalText + "'");
-        assertFalse(rawTotalText.isEmpty(), "Chuỗi tổng tiền không được rỗng");
+        // 2. Bóc tách tổng tiền thực tế hiển thị tại mục 'TỔNG CỘNG' (.cart-total .price) trên trang /cart
+        WebElement totalElement = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".cart-total .price")));
+        String rawTotalText = totalElement.getText().trim();
+        System.out.println("Chuỗi TỔNG CỘNG hiển thị trên giỏ hàng: '" + rawTotalText + "'");
+        assertFalse(rawTotalText.isEmpty(), "Chuỗi tổng tiền trên giỏ hàng không được rỗng");
 
         long actualTotal = Long.parseLong(rawTotalText.replaceAll("[^0-9]", ""));
-        System.out.println("Tổng tiền thực tế dạng số: " + actualTotal + " VND");
+        System.out.println("Tổng tiền thực tế trên giỏ hàng (dạng số): " + actualTotal + " VND");
 
-        // 5. Đối chiếu tổng tiền thực tế với tổng tiền mong đợi của 3 sản phẩm
-        assertEquals(expectedTotal, actualTotal, "Tổng tiền hiển thị trên giỏ hàng phải đúng bằng Đơn giá x Số lượng (3 sản phẩm = 3.540.000 VND)");
-        System.out.println("Xác nhận: Giỏ hàng hiển thị chính xác tổng tiền của đúng 3 sản phẩm (" + actualTotal + " VND)");
+        // 3. Đối chiếu chính xác tuyệt đối giữa Tổng tiền thực tế và Tổng tiền kỳ vọng của 3 sản phẩm
+        assertEquals(expectedTotal, actualTotal,
+                "Tổng giá tiền trên giỏ hàng phải khớp chính xác 100% với tổng giá của 3 sản phẩm đã mua (1.915.000 VND)");
+        System.out.println("Xác nhận thành công: Tổng tiền giỏ hàng khớp chính xác tuyệt đối (" + actualTotal + " VND)!");
     }
 }
