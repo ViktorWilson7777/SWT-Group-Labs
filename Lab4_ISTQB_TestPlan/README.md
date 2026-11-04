@@ -1,216 +1,255 @@
-# LAB 4: ISTQB TEST PLAN & HỒ SƠ ỨNG DỤNG AI (HỆ THỐNG EGA AUTOCARE)
+# LAB 4: ISTQB SOFTWARE TEST PLAN & AI APPLICATION EVIDENCE (EGA AUTOCARE SYSTEM)
 
-> **Mã tài liệu**: `TP-SWT-EGA-2026-V1.0`  
-> **Chuẩn áp dụng**: **ISTQB Foundation Level / IEEE 829 / ISO/IEC/IEEE 29119-3**  
-> **Hệ thống kiểm thử**: Hệ thống Thương mại Điện tử Phụ tùng & Dịch vụ Bảo dưỡng Ô tô **EGA Autocare** (`https://ega-autocare.mysapo.net/`)  
-> **Phụ trách chính**: Thành viên 5 (M5) phối hợp cùng M1, M2, M3, M4  
-
----
-
-## PHẦN A: NỘI DUNG CHI TIẾT ISTQB TEST PLAN (MỤC 1 → MỤC 9 & MỤC 10 → 12)
+> **Document ID**: `TP-SWT-EGA-2026-V1.0`  
+> **Standards Applied**: **ISTQB® CTFL v4.0 / IEEE Std 829 / ISO/IEC/IEEE 29119-3**  
+> **System Under Test (SUT)**: **EGA Autocare** Automotive Parts & Maintenance E-Commerce System (`https://ega-autocare.mysapo.net/`)  
+> **Primary Author**: **M5 - Trần Thanh Nguyên** (in collaboration with **M1 - Nguyễn Hoàng Vinh**, **M2 - Đinh Thành Trung**, **M3 - Trần Công Tiến**, **M4 - Văn Thái Trung**)  
 
 ---
 
-### 1. Test Plan Identifier (Mã Định Danh Kế Hoạch Kiểm Thử)
+## PART A: ISTQB SOFTWARE TEST PLAN (SECTIONS 1 TO 12)
 
-| Thuộc tính | Nội dung chi tiết |
+---
+
+### 1. Test Plan Identifier
+
+| Attribute | Detailed Description |
 | :--- | :--- |
-| **Mã Kế hoạch Kiểm thử (Document ID)** | `TP-SWT-EGA-2026-V1.0` |
-| **Tên Dự án / Hệ thống** | Hệ thống Phụ tùng & Bảo dưỡng Ô tô **EGA Autocare** |
-| **Phiên bản (Version)** | `1.0 (Final Release)` |
-| **Ngày ban hành** | `03/11/2026` |
-| **Chuẩn tham chiếu** | ISTQB® CTFL Syllabus v4.0 & IEEE Std 829 / ISO/IEC/IEEE 29119-3 |
-| **Tác giả & Nhóm thực hiện** | • **M1 (Leader)**: Phụ trách Lab 1 (JUnit 5) & Phê duyệt Test Plan<br>• **M2**: Phụ trách Lab 2 (NodeJS / React / Jest)<br>• **M3**: Phụ trách Lab 3 - Phần 1 (Selenium Access, Login, Search)<br>• **M4**: Phụ trách Lab 3 - Phần 2 (Selenium Mua ≥ 3 SP, Tổng tiền Giỏ hàng)<br>• **M5**: Phụ trách chính Lab 4 (ISTQB Test Plan, Hồ sơ AI & Chuẩn hóa Test Case Template) |
+| **Test Plan Document ID** | `TP-SWT-EGA-2026-V1.0` |
+| **Project / System Under Test** | **EGA Autocare** Automotive Parts & Garage Maintenance System (`https://ega-autocare.mysapo.net/`) |
+| **Document Version** | `1.0 (Final Release)` |
+| **Release Date** | `03-Nov-2026` |
+| **Reference Standards** | ISTQB® Certified Tester Foundation Level (CTFL v4.0) & IEEE Std 829 / ISO/IEC/IEEE 29119-3 |
+| **Authors & Project Team** | • **M1 - Nguyễn Hoàng Vinh (Leader)**: Lab 1 Lead (Java / JUnit 5 / JaCoCo) & Test Plan Approval<br>• **M2 - Đinh Thành Trung**: Lab 2 Lead (Node.js / React / Jest / RTL)<br>• **M3 - Trần Công Tiến**: Lab 3 Lead - Part 1 (Selenium Access, Valid Login, Invalid Login, Search)<br>• **M4 - Văn Thái Trung**: Lab 3 Lead - Part 2 (Selenium Multi-Product Cart & Total Price Verification)<br>• **M5 - Trần Thanh Nguyên**: Lab 4 Lead (ISTQB Test Plan, AI Evidence Log & Test Case Standardization) |
 
 ---
 
-### 2. Introduction & Purpose (Giới Thiệu & Mục Đích)
+### 2. Introduction & Purpose
 
-#### 2.1. Giới thiệu bối cảnh dự án
-**EGA Autocare** (`https://ega-autocare.mysapo.net/`) là hệ thống thương mại điện tử chuyên cung cấp phụ tùng, phụ kiện chăm sóc ô tô (bơm lốp Michelin, tinh dầu Areon, bạt phủ AutoGuard,...) kết hợp dịch vụ đặt lịch bảo dưỡng định kỳ tại gara. Để đảm bảo độ tin cậy tuyệt đối về mặt tính toán tài chính (chiết khấu, phí lắp đặt, phí vận chuyển, thuế GTGT), tính ổn định của các thành phần giao diện người dùng (UI Components) và sự thông suốt của luồng mua sắm trực tuyến, nhóm thực hiện chiến dịch kiểm thử phần mềm toàn diện theo chuẩn **ISTQB**.
+#### 2.1. Project Background
+**EGA Autocare** (`https://ega-autocare.mysapo.net/`) is an e-commerce platform specializing in genuine automotive parts, car care accessories (Michelin tire inflators, Areon car perfumes, AutoGuard car covers, etc.), and scheduled garage maintenance services. To guarantee financial calculation accuracy (quantity discounts, installation fees, membership tier discounts, shipping fees, and VAT tax), UI component stability, and end-to-end online shopping reliability, our team conducts a comprehensive software testing campaign adhering to **ISTQB** standards.
 
-#### 2.2. Mục đích của tài liệu
-1. Xác định rõ phạm vi kiểm thử (In-Scope / Out-of-Scope) cho cả 3 cấp độ: **Unit Testing (Lab 1)**, **Component & Snapshot Testing (Lab 2)** và **System End-to-End Web Testing (Lab 3)**.
-2. Quy định phương pháp thiết kế ca kiểm thử (Hộp trắng, Hộp đen, Data-Driven qua file CSV) nhằm đạt **100% Code Coverage** và **100% Test Automation**.
-3. Thiết lập tiêu chí Đạt/Không đạt (Pass/Fail), điều kiện Tạm dừng/Tiếp tục (Suspension/Resumption) và danh mục Sản phẩm bàn giao (Test Deliverables) thống nhất cho toàn nhóm.
+#### 2.2. Purpose of This Document
+1. Define the testing scope (**In-Scope** and **Out-of-Scope**) across three testing levels: **Unit Testing (Lab 1)**, **Component & Snapshot Testing (Lab 2)**, and **System End-to-End Web Testing (Lab 3)**.
+2. Specify the test design methodologies (White-Box Testing, Black-Box EP/BVA, and Data-Driven Testing via `.csv` files) required to achieve **100% Code Coverage** and **100% Test Automation**.
+3. Establish clear **Item Pass/Fail Criteria**, **Suspension/Resumption Requirements**, **Resource & Schedule Milestones**, **Risk Management**, and **Test Deliverables** for the entire 5-member team.
 
 ---
 
-### 3. Test Items (Các Đối Tượng / Hạng Mục Kiểm Thử)
+### 3. Test Items
 
-| Mã Hạng Mục | Tên Phân Hệ / Module | Công Nghệ & Phiên Bản | Đường Dẫn Mã Nguồn Trong Repository |
+| Item ID | Subsystem / Module Name | Technology Stack & Versions | Source Code Path in Repository |
 | :---: | :--- | :--- | :--- |
-| **TI-01** | **Phân hệ Tính Hóa Đơn Phụ Tùng & Lắp Đặt (`EgaAutocareBillingService`)** | Java 17, Maven 3.9, JUnit 5.10.2, JaCoCo 0.8.12 | `Lab1_JUnit5/src/main/java/com/mycompany/lab1/EgaAutocareBillingService.java` |
-| **TI-02** | **Phân hệ UI Component & Tính Hóa Đơn Dịch Vụ Bảo Dưỡng** | Node.js, React 18.2, Jest 29.7, React Testing Library 14.2 | `Lab2_NodeJS/src/components/*.jsx`<br>`Lab2_NodeJS/src/services/discountService.js`<br>`Lab2_NodeJS/src/utils/csvLoader.js` |
-| **TI-03** | **Phân hệ Website Thương Mại Điện Tử EGA Autocare (Storefront)** | Nền tảng Sapo Web (`https://ega-autocare.mysapo.net/`), Selenium 4.25.0 | `Lab3_Selenium_EGA_Autocare/src/test/java/com/mycompany/egaautocare/EgaAutocareTest.java` |
+| **TI-01** | **Automotive Parts & Installation Billing Service (`EgaAutocareBillingService`)** | Java 17, Maven 3.9, JUnit Jupiter 5.10.2, JaCoCo 0.8.12 | `Lab1_JUnit5/src/main/java/com/mycompany/lab1/EgaAutocareBillingService.java` |
+| **TI-02** | **Frontend React UI Components & Service Invoice Calculator** | Node.js, React 18.2, Jest 29.7, React Testing Library 14.2 | `Lab2_NodeJS/src/components/*.jsx`<br>`Lab2_NodeJS/src/services/discountService.js`<br>`Lab2_NodeJS/src/utils/csvLoader.js` |
+| **TI-03** | **EGA Autocare Live E-Commerce Web Storefront** | Sapo Web Platform (`https://ega-autocare.mysapo.net/`), Selenium WebDriver 4.25.0 | `Lab3_Selenium_EGA_Autocare/src/test/java/com/mycompany/egaautocare/EgaAutocareTest.java` |
 
 ---
 
-### 4. Features to be Tested (Các Tính Năng Được Kiểm Thử)
+### 4. Features to be Tested (In-Scope)
 
-| Mã Tính Năng | Tên Tính Năng & Mô Tả Nghiệp Vụ | Cấp Độ Kiểm Thử | Trọng Số / Ưu Tiên | Mã Test Case Liên Kết |
+| Feature ID | Feature Name & Business Specification | Test Level | Priority | Linked Test Case IDs |
 | :---: | :--- | :---: | :---: | :--- |
-| **FT-01** | Kiểm tra tính hợp lệ đầu vào đơn hàng (`isValidOrderInput`: số lượng `1..100`, đơn giá `> 0`, khoảng cách `>= 0`) | Unit Test (Lab 1) | Cao (High) | `UT_L1_01_01` → `UT_L1_01_08` |
-| **FT-02** | Tính tiền phụ tùng theo bậc chiết khấu số lượng (`calculatePartsSubtotal`: mua `>= 10` giảm 10%, `>= 4` giảm 5%) | Unit Test (Lab 1) | Cao (High) | `UT_L1_02_01` → `UT_L1_02_06` |
-| **FT-03** | Tính phí công lắp đặt tại gara theo gói (`calculateInstallationFee`: `NONE`, `PREMIUM`, `STANDARD`, `BASIC`) | Unit Test (Lab 1) | Trung bình | `UT_L1_03_01` → `UT_L1_03_05` |
-| **FT-04** | Tính chiết khấu hạng thẻ thành viên (`calculateMemberDiscount`: `VIP` 15%, `GOLD` 10%, `SILVER` 5%, `REGULAR` 0%) | Unit Test (Lab 1) | Cao (High) | `UT_L1_04_01` → `UT_L1_04_06` |
-| **FT-05** | Tính phí vận chuyển (`calculateShippingFee`: miễn phí khi nhận tại gara hoặc đơn sau giảm `>= 2.000.000đ`) | Unit Test (Lab 1) | Trung bình | `UT_L1_05_01` → `UT_L1_05_05` |
-| **FT-06** | Tính thuế GTGT 8% khi yêu cầu xuất hóa đơn (`calculateVatTax`) & Tổng hợp hóa đơn liên hoàn 7 hàm (`calculateFinalInvoiceTotal`, giảm thêm `200k` cho đơn `>= 10 triệu`) | Unit Test & Integration (Lab 1) | Rất cao (Critical) | `UT_L1_06_01` → `UT_L1_07_05` |
-| **FT-07** | Tương tác nút Đặt lịch bảo dưỡng xe (`ServiceBookingButton`: giảm slot, sinh mã `EGA-1001`, vô hiệu hóa nút khi `slots = 0`, nút Reset) | Component Test (Lab 2) | Cao (High) | `TC01_Test_Button` (6 test methods) |
-| **FT-08** | Hiển thị chuỗi thông báo khách hàng, hạng thẻ, quy đổi điểm thưởng, cảnh báo bảo dưỡng & thông báo đặc biệt (`MembershipGreetingBanner`) | Component CSV Test (Lab 2) | Cao (High) | `TC_GREET_01` → `TC_GREET_05` |
-| **FT-09** | Đóng băng và kiểm tra hồi quy cấu trúc DOM của thẻ dịch vụ (`AutoServiceCard`: gói mặc định, gói Hot giảm giá, gói thường) | Snapshot Test (Lab 2) | Trung bình | `TC03_Snapshot` (3 Snapshots) |
-| **FT-10** | Tính hóa đơn dịch vụ bảo dưỡng (`calculateServiceInvoice`: kiểm tra ngoại lệ, mã voucher `EGAMEGA`/`EGASUPER`/`EGAFREE`, ưu đãi khách mới 5%, trần giảm giá tối đa 50%, VAT 10%) | Unit CSV Test (Lab 2) | Rất cao (Critical) | `TC_DISC_01` → `TC_DISC_ERR_02` |
-| **FT-11** | Truy cập trang chủ `ega-autocare.mysapo.net`, Đăng nhập thành công (`linhcampochia@gmail.com`) và Đăng nhập thất bại với tài khoản chưa đăng ký | System E2E Test (Lab 3) | Rất cao (Critical) | `ST_L3_001` → `ST_L3_003` |
-| **FT-12** | Tìm kiếm sản phẩm phụ tùng (`"bơm lốp"`), Mua ít nhất 3 sản phẩm khác nhau và Kiểm tra tổng giá tiền giỏ hàng (`1.915.000₫`) | System E2E Test (Lab 3) | Rất cao (Critical) | `ST_L3_004` → `ST_L3_006` |
+| **FT-01** | Validate order input boundaries (`isValidOrderInput`: quantity in `1..100`, unitPrice `> 0`, distanceKm `>= 0`) | Unit Test (Lab 1) | High | `UT_L1_01` (`8 CSV rows`) |
+| **FT-02** | Calculate parts subtotal with bulk quantity discounts (`calculatePartsSubtotal`: `>= 10` items gets 10% off, `>= 4` items gets 5% off) | Unit Test (Lab 1) | High | `UT_L1_02` (`6 CSV rows`) |
+| **FT-03** | Calculate garage installation labor fees by service package (`calculateInstallationFee`: `NONE`, `PREMIUM`, `STANDARD`, `BASIC`) | Unit Test (Lab 1) | Medium | `UT_L1_03` (`5 CSV rows`) |
+| **FT-04** | Calculate loyalty membership tier discounts (`calculateMemberDiscount`: `VIP` 15%, `GOLD` 10%, `SILVER` 5%, `REGULAR` 0%) | Unit Test (Lab 1) | High | `UT_L1_04` (`6 CSV rows`) |
+| **FT-05** | Calculate delivery shipping fees (`calculateShippingFee`: free for garage pickup `0km` or net order `>= 2,000,000 VND`, urban vs. suburban rates) | Unit Test (Lab 1) | Medium | `UT_L1_05` (`5 CSV rows`) |
+| **FT-06** | Calculate 8% VAT tax (`calculateVatTax`) & End-to-End Chained Final Invoice Total (`calculateFinalInvoiceTotal` with `200,000 VND` rebate for orders `>= 10M VND`) | Unit & Integration (Lab 1) | Critical | `UT_L1_06` & `UT_L1_07` (`9 CSV rows`) |
+| **FT-07** | Interactive Garage Service Booking Button (`ServiceBookingButton`: slot decrement, booking code `EGA-1001`, disabled state at `0` slots, Reset button) | Component Test (Lab 2) | High | `UT_L2_BTN_001` (`6 test methods`) |
+| **FT-08** | Dynamic Membership Greeting, Tier Privilege Badge, Loyalty Point Conversion & Maintenance Alert (`MembershipGreetingBanner`) | Component CSV Test (Lab 2) | High | `UT_L2_STR_001` (`TC_GREET_01` → `05`) |
+| **FT-09** | DOM Structure Regression & Snapshot Verification for Service Package Cards (`AutoServiceCard`: Default, Hot Deal Promo, Basic) | Snapshot Test (Lab 2) | Medium | `UT_L2_SNAP_001` (`3 Snapshots`) |
+| **FT-10** | Maintenance Service Invoice Calculation (`calculateServiceInvoice`: input validation, vouchers `EGAMEGA`/`EGASUPER`/`EGAFREE`, first-time 5% bonus, 50% cap, 10% VAT) | Unit CSV Test (Lab 2) | Critical | `UT_L2_FUNC_001` (`TC_DISC_01` → `ERR_02`) |
+| **FT-11** | Storefront Access (`ega-autocare.mysapo.net`), Valid Customer Login (`linhcampochia@gmail.com`), and Unregistered Account Login Rejection | System E2E Test (Lab 3) | Critical | `ST_L3_001` → `ST_L3_003` |
+| **FT-12** | Product Keyword Search (`"bơm lốp"`), Adding at Least 3 Distinct Products to Cart, and Verifying Exact Cart Total Price (`1,915,000 VND`) | System E2E Test (Lab 3) | Critical | `ST_L3_004` → `ST_L3_006` |
 
 ---
 
-### 5. Features NOT to be Tested (Các Tính Năng Ngoài Phạm Vi Kiểm Thử)
+### 5. Features NOT to be Tested (Out-of-Scope)
 
-Để tập trung nguồn lực vào các yêu cầu cốt lõi của bài Lab và tránh tác động xấu lên môi trường vận hành thực tế của cửa hàng, các tính năng sau nằm ngoài phạm vi kiểm thử:
-1. **Thanh toán thực tế qua cổng ngân hàng / ví điện tử (Payment Gateway Execution)**: Không thực hiện bấm hoàn tất đặt hàng (Submit Order) ở bước cuối thanh toán để tránh tạo đơn hàng rác cho hệ thống thực tế `ega-autocare.mysapo.net`.
-2. **Kiểm thử hiệu năng và chịu tải (Performance / Load / Stress Testing)**: Không thực hiện giả lập hàng ngàn người dùng truy cập đồng thời vào máy chủ Sapo.
-3. **Kiểm thử bảo mật chuyên sâu (Penetration Testing / SQL Injection / DDoS)**: Chỉ kiểm tra xác thực đăng nhập cơ bản (`TC02`, `TC03`), không thực hiện tấn công thử nghiệm lên hạ tầng đám mây của Sapo.
-4. **Phân hệ Quản trị Nội bộ (Sapo Admin CMS & Quản lý Kho)**: Nhóm kiểm thử ở góc độ người dùng cuối (Customer Storefront) và các dịch vụ tính toán độc lập.
-
----
-
-### 6. Approach / Test Strategy (Phương Pháp Tiếp Cận & Chiến Lược Kiểm Thử)
-
-Chiến lược kiểm thử được thiết kế theo mô hình **Kim tự tháp Kiểm thử (Testing Pyramid)** kết hợp **100% Tự động hóa (Full Test Automation)**:
-
-```mermaid
-flowchart TD
-    L3["Tầng 3: System E2E Web Testing (Lab 3 - Selenium WebDriver 4 + JUnit 5)"]
-    L2["Tầng 2: Component & Snapshot Testing (Lab 2 - React Testing Library + Jest Snapshot)"]
-    L1["Tầng 1: Unit & Data-Driven Testing (Lab 1 Java JUnit 5 + Lab 2 NodeJS Jest + CSV)"]
-
-    L1 --> L2 --> L3
-```
-
-1. **Kỹ thuật Kiểm thử Hộp trắng (White-Box Testing)**:
-   - Áp dụng tiêu chuẩn **100% Statement Coverage** (mọi câu lệnh đều được thực thi ít nhất 1 lần) và **100% Branch/Decision Coverage** (mọi nhánh `true`/`false` của tất cả điều kiện `if - else if - else` và toán tử logic `||`, `&&` đều được kiểm thử).
-   - Công cụ đo lường tự động: **JaCoCo Maven Plugin `0.8.12`** (cho Java Lab 1) và **Jest Coverage Engine** với cấu hình `coverageThreshold = 100%` (cho NodeJS Lab 2).
-2. **Kỹ thuật Kiểm thử Hộp đen (Black-Box Testing)**:
-   - **Phân vùng tương đương (Equivalence Partitioning - EP)**: Chia dữ liệu thành các vùng hợp lệ (số lượng `1..3`, `4..9`, `10..100`, hạng thẻ `VIP`/`GOLD`/`SILVER`/`REGULAR`) và vùng không hợp lệ (`<= 0`, `> 100`, đơn giá âm, hạng thẻ không tồn tại `PLATINUM`).
-   - **Phân tích giá trị biên (Boundary Value Analysis - BVA)**: Kiểm thử sát các điểm biên nhạy cảm (`itemQuantity = 0, 1, 4, 10, 100, 101`; `distanceKm = 0, 10`; mốc miễn phí vận chuyển `2.000.000đ`; mốc hóa đơn lớn `10.000.000đ`; trần chiết khấu `50%`).
-3. **Kiểm thử Hướng dữ liệu (Data-Driven Testing - DDT qua file CSV)**:
-   - Không gán cứng (hard-code) bộ dữ liệu trong mã nguồn test. Toàn bộ dữ liệu đầu vào và kết quả kỳ vọng được tách riêng vào các file `.csv` (`valid_order_input.csv`, `parts_subtotal.csv`, ..., `discount_test_data.csv`, `greeting_test_data.csv`) và nạp động vào hàm test.
-4. **Kiểm thử Giao diện Tự động (Selenium WebDriver E2E)**:
-   - Sử dụng **Selenium 4.25.0** (tích hợp sẵn *Selenium Manager* tự động đồng bộ ChromeDriver theo phiên bản Chrome trên máy).
-   - Sử dụng `WebDriverWait` (`ExpectedConditions`) để đồng bộ hóa trạng thái tải trang và thuật toán bóc tách chuỗi tiền tệ (`replaceAll("[^0-9]", "")`) để đối chiếu tổng giá trị giỏ hàng chính xác tuyệt đối.
+To focus resources on core requirements and prevent unintended side effects on the live production storefront, the following features are excluded from scope:
+1. **Real Payment Gateway Execution & Final Order Submission**: Automation stops at shopping cart verification (`/cart`) to avoid generating fake commercial orders on the live `ega-autocare.mysapo.net` store.
+2. **Performance, Load & Stress Testing**: High-concurrency traffic simulation against Sapo cloud servers is out of scope.
+3. **Penetration & Security Exploitation Testing**: Only functional authentication validation (`ST_L3_002`, `ST_L3_003`) is tested; SQL injection or DDoS testing is excluded.
+4. **Back-Office Admin CMS & Inventory Management**: Testing is strictly scoped to customer-facing storefront workflows and standalone billing/UI modules.
 
 ---
 
-### 7. Item Pass/Fail Criteria (Tiêu Chí Đạt / Không Đạt)
+### 6. Approach / Test Strategy
 
-#### 7.1. Tiêu chí Đạt (Pass Criteria) cho từng Hạng mục
-| Hạng mục | Tiêu chí Thực thi (Execution) | Tiêu chí Độ phủ (Coverage) | Tiêu chí Báo cáo & Tài liệu |
+Our test strategy follows the **Testing Pyramid** combined with **100% Full Test Automation**:
+
+1. **White-Box Testing Technique**:
+   - Enforces **100% Statement/Instruction Coverage** and **100% Branch/Decision Coverage** across all conditional `if - else if - else` structures and compound boolean expressions (`||`, `&&`).
+   - Measured automatically using **JaCoCo Maven Plugin `0.8.12`** (Lab 1) and **Jest Coverage Engine** with `coverageThreshold = 100%` (Lab 2).
+2. **Black-Box Testing Technique**:
+   - **Equivalence Partitioning (EP)**: Divides inputs into valid partitions (quantities `1..3`, `4..9`, `10..100`; tiers `VIP`, `GOLD`, `SILVER`, `REGULAR`) and invalid partitions (`<= 0`, `> 100`, negative prices, unsupported tiers).
+   - **Boundary Value Analysis (BVA)**: Targets exact boundary thresholds (`itemQuantity = 0, 1, 4, 10, 100, 101`; `distanceKm = 0, 10`; free-shipping threshold `2,000,000 VND`; high-value order threshold `10,000,000 VND`; maximum discount cap `50%`).
+3. **Data-Driven Testing (DDT via CSV Fixtures)**:
+   - Decouples test inputs and expected outputs from test scripts into external `.csv` files (`7 CSV files` in Lab 1 and `2 CSV files` in Lab 2) loaded dynamically at runtime.
+4. **End-to-End Web UI Automation (Selenium WebDriver 4)**:
+   - Uses **Selenium 4.25.0** with built-in *Selenium Manager*, explicit `WebDriverWait` (`ExpectedConditions`), scoped CSS selectors, and numeric price parsing (`replaceAll("[^0-9]", "")`) to verify exact shopping cart totals.
+
+---
+
+### 7. Item Pass/Fail Criteria
+
+#### 7.1. Pass Criteria by Test Level
+| Test Level | Execution Criteria | Code Coverage Criteria | Reporting & Documentation Criteria |
 | :--- | :--- | :--- | :--- |
-| **Lab 1 (JUnit 5)** | **39/39** test cases chạy tự động `Pass` (`0 Failures, 0 Errors`) | **100%** Instructions (`225/225`)<br>**100%** Branches (`46/46`)<br>**100%** Methods (`8/8`) | Có báo cáo HTML JaCoCo + Surefire và file `TestCase_Lab1_JUnit5.xls` |
-| **Lab 2 (NodeJS)** | **41/41** test cases & **3/3** Snapshots chạy `Pass` | **100%** Statements (`143/143`)<br>**100%** Branches (`113/113`)<br>**100%** Functions & Lines | Có báo cáo LCOV HTML + Jest Report và file `TestCase_Lab2_NodeJS.xls` |
-| **Lab 3 (Selenium)** | **6/6** kịch bản E2E chạy tự động liên hoàn `Pass` trên `ega-autocare.mysapo.net` | Bao phủ 100% 6 yêu cầu chức năng từ `(i)` đến `(vi)` của đề bài | Tổng tiền 3 sản phẩm khớp đúng `1.915.000₫`; có `TestCase_Lab3_Selenium.xls` |
+| **Lab 1 (JUnit 5)** | **39/39** automated CSV test cases `Pass` (`0 Failures, 0 Errors`) | **100%** Instructions (`225/225`)<br>**100%** Branches (`46/46`)<br>**100%** Methods (`8/8`) | JaCoCo HTML/XML/CSV reports + `TestCase_Lab1_JUnit5.xls` completed |
+| **Lab 2 (NodeJS)** | **41/41** test cases & **3/3** Snapshots `Pass` | **100%** Statements (`143/143`)<br>**100%** Branches (`113/113`)<br>**100%** Functions & Lines | Jest LCOV HTML report + Snapshot file + `TestCase_Lab2_NodeJS.xls` completed |
+| **Lab 3 (Selenium)** | **6/6** ordered E2E scenarios (`@Order(1)` → `@Order(6)`) `Pass` on live `ega-autocare.mysapo.net` | Covers 100% of required functional scenarios `(i)` through `(vi)` | 3-product cart total matches exact `1,915,000 VND` + `TestCase_Lab3_Selenium.xls` completed |
 
-#### 7.2. Tiêu chí Không đạt (Fail Criteria)
-- Bất kỳ ca kiểm thử tự động nào trả về trạng thái `Failed` hoặc `Error`.
-- Chỉ số `Branch Coverage` hoặc `Statement Coverage` trong báo cáo JaCoCo / Jest đạt dưới `100%`.
-- Kịch bản Selenium không tự động lấy được giá trị thực tế từ giao diện web hoặc sử dụng điều kiện kiểm tra giả (assertion luôn đúng).
-
----
-
-### 8. Suspension Criteria and Resumption Requirements (Tiêu Chí Tạm Dừng & Điều Kiện Tiếp Tục)
-
-#### 8.1. Tiêu chí Tạm dừng (Suspension Criteria)
-1. **Sự cố môi trường mạng hoặc máy chủ Web (Lab 3)**: Website `https://ega-autocare.mysapo.net/` không thể truy cập (Timeout > 30 giây, lỗi HTTP 500/502/503) hoặc bật cơ chế chặn Captcha tự động trên trang đăng nhập.
-2. **Thay đổi dữ liệu sản phẩm trên trang đích**: Một trong 3 sản phẩm mẫu (`/michelin-m2566-bom-lop`, `/areon-tinh-dau-treo-xe`, `/autoguard-bat-phu-xe`) bị ẩn hoặc chuyển sang trạng thái *"Hết hàng"* trên hệ thống Sapo.
-3. **Lỗi cấu hình môi trường Build (Lab 1 & Lab 2)**: Lỗi thiếu thư viện Maven (`.m2`) hoặc `node_modules` làm dừng quá trình biên dịch trước khi test chạy.
-
-#### 8.2. Điều kiện Tiếp tục (Resumption Requirements)
-1. Đường truyền mạng và website `ega-autocare.mysapo.net` hoạt động ổn định trở lại (`test01_AccessWeb` chạy Pass).
-2. Nếu sản phẩm mẫu trên web hết hàng, nhóm cập nhật lại đường dẫn slug của sản phẩm còn hàng tương đương trong mảng `productSlugs` và chạy lại từ `TC01` → `TC06`.
-3. Môi trường JDK / Maven / Node.js được khôi phục và biên dịch thành công (`mvn test-compile` / `npm test`).
+#### 7.2. Fail Criteria
+- Any automated unit, component, snapshot, or Selenium E2E test results in `Failed` or `Error`.
+- Statement or Branch Coverage in JaCoCo (Lab 1) or Jest (Lab 2) drops below `100%`.
+- Selenium E2E assertions fail to verify live DOM values or hardcode trivial assertions.
 
 ---
 
-### 9. Test Deliverables (Các Sản Phẩm Bàn Giao)
+### 8. Suspension Criteria and Resumption Requirements
 
-| STT | Tên Sản Phẩm Bàn Giao (Deliverable) | Định Dạng | Vị Trí Lưu Trữ Trong Repository | Trạng Thái |
+#### 8.1. Suspension Criteria
+1. **Live Storefront Outage or Anti-Bot Captcha (Lab 3)**: `https://ega-autocare.mysapo.net/` becomes unreachable (HTTP 5xx or timeout > 30s) or enables interactive Captcha on `/account/login`.
+2. **Product Inventory Change on Live Store**: Any of the 3 target products (`/michelin-m2566-bom-lop`, `/areon-tinh-dau-treo-xe`, `/autoguard-bat-phu-xe`) becomes out-of-stock or unpublished.
+3. **Build Environment Failure (Lab 1 & Lab 2)**: Corrupted Maven `.m2` repository or missing `node_modules` dependencies preventing test compilation.
+
+#### 8.2. Resumption Requirements
+1. Network connectivity and `ega-autocare.mysapo.net` availability are restored (`test01_AccessWeb` passes).
+2. If a sample product goes out of stock, the product slug array `productSlugs` in `EgaAutocareTest.java` is updated with an available item and the full regression suite (`@Order(1)` → `@Order(6)`) is re-executed.
+3. JDK/Maven and Node.js dependencies are restored and verified via `mvn clean test` and `npx jest --coverage`.
+
+---
+
+### 9. Test Deliverables
+
+| No. | Deliverable Name | Format | Repository Location | Status |
 | :---: | :--- | :---: | :--- | :---: |
-| **1** | Mã nguồn 7 hàm Java + Bộ Unit Test JUnit 5 + 7 file CSV + Báo cáo JaCoCo 100% | `.java`, `.csv`, `.html`, `.xml` | `Lab1_JUnit5/` | Hoàn thành |
-| **2** | Tài liệu Đặc tả Test Case Lab 1 (7 Sheet cho 7 hàm) | `.xls` | `Lab1_JUnit5/TestCase_Lab1_JUnit5.xls` | Hoàn thành |
-| **3** | Mã nguồn React/NodeJS + Bộ Test Jest + 2 file CSV + Snapshot + Báo cáo Coverage 100% | `.jsx`, `.js`, `.csv`, `.snap`, `.html` | `Lab2_NodeJS/` | Hoàn thành |
-| **4** | Tài liệu Đặc tả Test Case Lab 2 (4 Sheet cho Button, String, Snapshot, Hàm `if-else`) | `.xls` | `Lab2_NodeJS/TestCase_Lab2_NodeJS.xls` | Hoàn thành |
-| **5** | Mã nguồn Selenium WebDriver (6 kịch bản E2E trên EGA Autocare) + Báo cáo Surefire | `.java`, `.xml`, `.txt` | `Lab3_Selenium_EGA_Autocare/` | Hoàn thành |
-| **6** | Tài liệu Đặc tả Test Case Lab 3 (6 Sheet cho 6 luồng E2E) | `.xls` | `Lab3_Selenium_EGA_Autocare/TestCase_Lab3_Selenium.xls` | Hoàn thành |
-| **7** | **Kế hoạch Kiểm thử chuẩn ISTQB (ISTQB Test Plan)** | `.docx`, `.md` | `Lab4_ISTQB_TestPlan/Lab4_ISTQB_TestPlan.docx` | Hoàn thành |
-| **8** | **Hồ sơ Minh chứng Ứng dụng AI & Danh mục Prompt (10% điểm Barem Lab 4)** | `.docx`, `.md` | `Lab4_ISTQB_TestPlan/Lab4_AI_Application_Evidence.docx` | Hoàn thành |
+| **1** | Lab 1 Java Source (7 methods) + JUnit 5 Test Suite + 7 CSV Datasets + 100% JaCoCo Report | `.java`, `.csv`, `.html`, `.xml` | `Lab1_JUnit5/` | Completed |
+| **2** | Lab 1 Test Case Specification Workbook (7 Sheets for 7 functions) | `.xls` | `Lab1_JUnit5/TestCase_Lab1_JUnit5.xls` | Completed |
+| **3** | Lab 2 React/Node.js Source + Jest Test Suite + 2 CSV Datasets + 3 Snapshots + 100% Coverage Report | `.jsx`, `.js`, `.csv`, `.snap`, `.html` | `Lab2_NodeJS/` | Completed |
+| **4** | Lab 2 Test Case Specification Workbook (4 Sheets: Button, String, Snapshot, Function If-Else) | `.xls` | `Lab2_NodeJS/TestCase_Lab2_NodeJS.xls` | Completed |
+| **5** | Lab 3 Selenium WebDriver E2E Test Suite (6 scenarios on EGA Autocare) + Surefire Reports | `.java`, `.xml`, `.txt` | `Lab3_Selenium_EGA_Autocare/` | Completed |
+| **6** | Lab 3 Test Case Specification Workbook (6 Sheets for 6 E2E flows) | `.xls` | `Lab3_Selenium_EGA_Autocare/TestCase_Lab3_Selenium.xls` | Completed |
+| **7** | **ISTQB Software Test Plan Document (Sections 1 to 12)** | `.docx`, `.md` | `Lab4_ISTQB_TestPlan/Lab4_ISTQB_TestPlan.docx` | Completed |
+| **8** | **AI Application Evidence & Prompt Engineering Log (10% Rubric Score)** | `.docx`, `.md` | `Lab4_ISTQB_TestPlan/Lab4_AI_Application_Evidence.docx` | Completed |
 
 ---
 
-### 10. Testing Tasks, Responsibilities & Schedule (Phân Công Nhiệm Vụ & Lịch Trình)
+### 10. Testing Tasks, Staffing & Schedule
 
-| Thành Viên | Vai Trò | Công Việc Phụ Trách Chính | Tiến Độ |
-| :---: | :--- | :--- | :---: |
-| **M1 (Leader)** | JUnit 5 Lead & Project Manager | Thiết kế 7 hàm `EgaAutocareBillingService`, viết JUnit 5 `@ParameterizedTest` đọc 7 file CSV, cấu hình JaCoCo 100%, nghiệm thu tổng thể | 100% |
-| **M2** | NodeJS & Jest Lead | Xây dựng `ServiceBookingButton`, `MembershipGreetingBanner`, `AutoServiceCard`, `discountService`, đọc CSV và cấu hình Jest 100% Coverage | 100% |
-| **M3** | Selenium Automation Lead (Phần 1) | Khởi tạo WebDriver, tài khoản test `linhcampochia@gmail.com` và tự động hóa 4 kịch bản: `Access`, `Login Đúng`, `Login Sai`, `Search` | 100% |
-| **M4** | Selenium Automation Lead (Phần 2) | Tự động hóa kịch bản `Mua >= 3 sản phẩm khác nhau` và `Kiểm tra tổng tiền giỏ hàng (1.915.000₫)`, xuất báo cáo Surefire | 100% |
-| **M5** | QA Documentation & ISTQB Lead | Soạn thảo tài liệu `Lab4_ISTQB_TestPlan.docx`, lưu hồ sơ Prompt AI và đồng bộ bộ 3 file `TestCaseTemplate.xls` | 100% |
+#### 10.1. Staffing & Responsibilities Matrix
+
+| Member ID & Name | Project Role | Primary Responsibilities | Tools & Techniques Used | Specific Deliverables | Completion |
+| :---: | :--- | :--- | :--- | :--- | :---: |
+| **M1 - Nguyễn Hoàng Vinh (Leader)** | Project Manager & JUnit 5 Lead | • Overall project management & GitHub repository (`main`)<br>• Design 7 interconnected methods in `EgaAutocareBillingService`<br>• Write JUnit 5 `@ParameterizedTest` with 7 `.csv` files & achieve 100% JaCoCo Coverage | Java 17, Maven 3.9, JUnit 5.10.2, JaCoCo 0.8.12, BVA & EP, White-Box Testing | • `EgaAutocareBillingService.java`<br>• `EgaAutocareBillingServiceTest.java`<br>• 7 `.csv` files (39 test cases)<br>• `TestCase_Lab1_JUnit5.xls` | **100%** (20% workload) |
+| **M2 - Đinh Thành Trung** | Node.js & React Testing Lead | • Implement 3 React Components (`ServiceBookingButton`, `MembershipGreetingBanner`, `AutoServiceCard`) & `discountService`<br>• Write Jest tests reading 2 `.csv` files, generate 3 Snapshots & achieve 100% Jest Coverage | Node.js, React 18.2, Jest 29.7, React Testing Library 14.2, Snapshot & CSV Testing | • `src/components/*.jsx`, `discountService.js`, `csvLoader.js`<br>• 5 `*.test.js` suites (41 tests + 3 Snapshots)<br>• `TestCase_Lab2_NodeJS.xls` | **100%** (20% workload) |
+| **M3 - Trần Công Tiến** | Selenium Automation Engineer (Part 1) | • Configure `WebDriver` & `WebDriverWait`<br>• Automate first 4 E2E scenarios (`@Order(1)` → `@Order(4)`): Access Website, Valid Login, Invalid Login, Product Search | Java, Maven, JUnit 5, Selenium WebDriver 4.25.0, CSS Selectors, JavascriptExecutor | • `EgaAutocareTest.java` (`test01` → `test04`)<br>• Sheets `TC01` → `TC04` in `TestCase_Lab3_Selenium.xls` | **100%** (20% workload) |
+| **M4 - Văn Thái Trung** | Selenium Automation Engineer (Part 2) | • Automate shopping cart E2E scenarios (`@Order(5)` → `@Order(6)`): Clear cart, buy 3 distinct products, parse unit prices, and verify exact cart total (`1,915,000 VND`) | Selenium WebDriver 4.25.0, DOM Price Parsing, Regular Expressions, Surefire Report | • `EgaAutocareTest.java` (`test05` → `test06`)<br>• Sheets `TC05` → `TC06` in `TestCase_Lab3_Selenium.xls` | **100%** (20% workload) |
+| **M5 - Trần Thanh Nguyên** | QA Documentation & ISTQB Lead | • Author the ISTQB Software Test Plan (Sections 1 → 12)<br>• Compile the AI Application Evidence Log (10% rubric score)<br>• Standardize and cross-check all 3 Excel Test Case workbooks | ISTQB CTFL v4.0, IEEE 829, Risk-Based Testing, Prompt Engineering | • `Lab4_ISTQB_TestPlan.docx`<br>• `Lab4_AI_Application_Evidence.docx`<br>• Review `TestCase_Lab1/2/3.xls` | **100%** (20% workload) |
+
+#### 10.2. Project Schedule & Milestone Tracking
+
+| Milestone | Phase & Detailed Activities | Assigned Members | Timeline | Exit Criteria | Status & Progress |
+| :---: | :--- | :---: | :---: | :--- | :---: |
+| **Milestone 1** | **Project Initialization, Rubric Analysis & Architecture Design**<br>• Initialize GitHub repository, 4 Lab directory structure, and whitelist `.gitignore`<br>• Analyze `LabTesting.txt` & `barem lab.xlsx` grading criteria<br>• Define specifications for 7 Java methods (Lab 1), 4 Node.js modules (Lab 2), 6 Selenium flows (Lab 3) & ISTQB outline (Lab 4) | **M1 - Nguyễn Hoàng Vinh<br>M2 - Đinh Thành Trung<br>M3 - Trần Công Tiến<br>M4 - Văn Thái Trung<br>M5 - Trần Thanh Nguyên** | `28-Oct-2026` – `29-Oct-2026` | • Maven (`pom.xml`) and Node (`package.json`) builds verified<br>• All 5 members aligned on input/output specifications | **Completed (100%)** |
+| **Milestone 2** | **Core Source Code & Test Script Implementation**<br>• **M1 (Nguyễn Hoàng Vinh)**: Implement 7 methods in `EgaAutocareBillingService` + 7 CSV files<br>• **M2 (Đinh Thành Trung)**: Implement Button, String Banner, Card, `discountService` + 2 CSV files<br>• **M3 (Trần Công Tiến) & M4 (Văn Thái Trung)**: Implement 6 Selenium E2E tests on `ega-autocare.mysapo.net`<br>• **M5 (Trần Thanh Nguyên)**: Draft Sections 1 → 9 of `Lab4_ISTQB_TestPlan.docx` & record AI Prompts | **M1 - Nguyễn Hoàng Vinh<br>M2 - Đinh Thành Trung<br>M3 - Trần Công Tiến<br>M4 - Văn Thái Trung<br>M5 - Trần Thanh Nguyên** | `30-Oct-2026` – `01-Nov-2026` | • All business logic and test suites compile cleanly<br>• Initial functional test runs pass | **Completed (100%)** |
+| **Milestone 3** | **100% Coverage Optimization & End-to-End Integration**<br>• **M1 (Nguyễn Hoàng Vinh)**: Run JaCoCo achieving `100% Instructions (225/225)` & `100% Branches (46/46)`<br>• **M2 (Đinh Thành Trung)**: Run `jest --coverage` achieving `100% Coverage` & generate 3 Snapshots<br>• **M3 (Trần Công Tiến) & M4 (Văn Thái Trung)**: Merge `@Order(1)` → `@Order(6)` in `EgaAutocareTest.java`, verifying `1,915,000 VND` cart total<br>• **M5 (Trần Thanh Nguyên)**: Complete Sections 10–12 (Risks) & `Lab4_AI_Application_Evidence.docx` | **M1 - Nguyễn Hoàng Vinh<br>M2 - Đinh Thành Trung<br>M3 - Trần Công Tiến<br>M4 - Văn Thái Trung<br>M5 - Trần Thanh Nguyên** | `02-Nov-2026` | • Lab 1: `39/39 Pass` (100% JaCoCo)<br>• Lab 2: `41/41 Pass`, `3/3 Snapshots` (100% Jest)<br>• Lab 3: `6/6 Pass` on live Chrome | **Completed (100%)** |
+| **Milestone 4** | **Documentation Synchronization, Cross-Review & Final Release**<br>• **M1 → M4**: Populate full English test specifications in `TestCase_Lab1_JUnit5.xls`, `TestCase_Lab2_NodeJS.xls`, `TestCase_Lab3_Selenium.xls`<br>• **M5 (Trần Thanh Nguyên) & M1 (Nguyễn Hoàng Vinh)**: Perform final QA cross-check between Word/Excel docs and code, push final release to `main` | **M1 - Nguyễn Hoàng Vinh<br>M2 - Đinh Thành Trung<br>M3 - Trần Công Tiến<br>M4 - Văn Thái Trung<br>M5 - Trần Thanh Nguyên** | `03-Nov-2026` | • All 4 Lab directories finalized on `main` branch<br>• 100% ready for final presentation & defense | **Completed (100%)** |
 
 ---
 
-### 11. Environmental Needs & Tools (Môi Trường & Công Cụ Kiểm Thử)
-- **Hệ điều hành**: Windows 11 (64-bit).
-- **Môi trường Lab 1 & Lab 3**: Java Development Kit (JDK 17 / JDK 21), Apache Maven `3.9.9`, Apache NetBeans IDE, JUnit Jupiter `5.10.2` / `5.6.0`, JaCoCo `0.8.12`, Selenium WebDriver `4.25.0`, trình duyệt Google Chrome.
-- **Môi trường Lab 2**: Node.js `v24.x`, npm `11.x`, React `18.2.0`, Jest `29.7.0`, `@testing-library/react` `14.2.1`, Babel.
-- **Hệ thống quản lý mã nguồn**: Git & GitHub (`https://github.com/ViktorWilson7777/SWT-Group-Labs`).
+### 11. Environmental Needs & Tools
+- **Operating System**: Windows 11 (64-bit).
+- **Lab 1 & Lab 3 Environment**: Java Development Kit (JDK 17 / JDK 21), Apache Maven `3.9.9`, Apache NetBeans IDE, JUnit Jupiter `5.10.2` / `5.6.0`, JaCoCo `0.8.12`, Selenium WebDriver `4.25.0`, Google Chrome browser.
+- **Lab 2 Environment**: Node.js `v24.x`, npm `11.x`, React `18.2.0`, Jest `29.7.0`, `@testing-library/react` `14.2.1`, Babel.
+- **Version Control System**: Git & GitHub (`https://github.com/ViktorWilson7777/SWT-Group-Labs`).
 
 ---
 
-### 12. Risks & Contingencies (Quản Lý Rủi Ro & Phương Án Dự Phòng)
+### 12. Risks & Contingencies (Risk-Based Testing Management)
 
-| Mã Rủi Ro | Mô Tả Rủi Ro Kỹ Thuật | Mức Độ | Phương Án Phòng Ngừa & Khắc Phục (Contingency Plan) |
+#### 12.1. Product & Technical Risks
+
+| Risk ID | Technical / Business Risk Description | Likelihood | Impact | Risk Level | Mitigation Strategy & Contingency Plan |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| **R-01** | Compound boolean conditions (`\|\|`, `&&`) or unreachable defensive branches causing **Branch Coverage** to fall below 100% in Lab 1 & Lab 2 | Medium | Very High (Lose 10% Coverage score) | **High** | • **Mitigation**: Inspect line-by-line branch highlights in JaCoCo (`0.8.12`) and Jest HTML reports.<br>• **Contingency**: Eliminate redundant checks, align voucher tier thresholds, and add boundary CSV rows until `0 missed branches` is achieved. |
+| **R-02** | Empty cells in `.csv` files parsed as empty strings `""` or whitespace `"   "` instead of `null`, causing unexpected `if-else` branch execution | High | High | **High** | • **Mitigation**: Standardize `csvLoader.js` and enforce `str && str.trim() !== ""` checks across components and services.<br>• **Contingency**: Add dedicated unit tests (`csvLoader.test.js`) covering blank lines, `#` comments, and whitespace values. |
+| **R-03** | Generic CSS selectors (`button[type='submit']`, `.price`) on Sapo Web (`ega-autocare.mysapo.net`) matching the header search button or hidden price spans | Very High | Very High (Fails Lab 3) | **Critical** | • **Mitigation**: Scope CSS selectors strictly to parent containers (`#customer_login button.btn-login`, `span.price.text-h4`, `.cart-total .price`).<br>• **Contingency**: Use `JavascriptExecutor` clicks and extract `textContent` with explicit `WebDriverWait`. |
+| **R-04** | Residual shopping cart items stored in browser cookies/session distorting the total price in `test05` and `test06` | Medium | High | **High** | • **Mitigation**: Explicitly navigate to `driver.get(BASE_URL + "/cart/clear")` at the start of `test05_BuyAtLeast3Products()` to reset the cart to `0 VND`.<br>• **Contingency**: Dynamically accumulate `expectedCartTotal` across the 3 added products for exact comparison in `test06`. |
+| **R-05** | Live storefront `ega-autocare.mysapo.net` latency, product stock-outs, or Chrome browser version mismatches on grading machines | Low | Very High | **Medium** | • **Mitigation**: Use **Selenium 4.25.0** with automatic *Selenium Manager* driver resolution and a 15-second `WebDriverWait`.<br>• **Contingency**: Maintain backup in-stock product slugs and support `-Dheadless=true` execution. |
+
+#### 12.2. Project & Team Coordination Risks
+
+| Risk ID | Project Management Risk Description | Risk Level | Practical Resolution |
 | :---: | :--- | :---: | :--- |
-| **R-01** | Biểu thức điều kiện kép (`\|\|`, `&&`) hoặc nhánh kiểm tra thừa làm độ phủ Branch Coverage bị hụt dưới 100% | Cao | Rà soát từng điều kiện bằng báo cáo HTML của JaCoCo/Jest; loại bỏ điều kiện kiểm tra trùng lặp và bổ sung đủ các dòng dữ liệu biên trong file CSV. |
-| **R-02** | Khi đọc file CSV trong NodeJS, ô trống trả về chuỗi rỗng `""` hoặc khoảng trắng `"   "` thay vì `null` | Trung bình | Chuẩn hóa điều kiện kiểm tra bằng `str && str.trim() !== ""` trong cả component và hàm xử lý. |
-| **R-03** | Selector CSS chung chung (`button[type='submit']`, `.price`) trên web Sapo bắt nhầm nút Tìm kiếm trên Header hoặc thẻ giá ẩn | Rất cao | Định danh phạm vi selector chặt chẽ (`#customer_login button.btn-login`, `span.price.text-h4`, `.cart-total .price`) và đọc `textContent` kết hợp `WebDriverWait`. |
+| **R-06** | Git merge conflicts or accidental commits of local scratch files/reference documents outside the 4 Lab folders | Medium | Enforce a **Whitelist `.gitignore` (`/*`)** at the repository root so only the 4 official folders (`Lab1_JUnit5/`, `Lab2_NodeJS/`, `Lab3_Selenium_EGA_Autocare/`, `Lab4_ISTQB_TestPlan/`) are tracked on `main`. |
+| **R-07** | Discrepancies between automated test code (JUnit/Jest/Selenium) and documentation (`TestCaseTemplate.xls`, `Lab4_ISTQB_TestPlan.docx`) | High | **M5 (Trần Thanh Nguyên)** and **M1 (Nguyễn Hoàng Vinh)** perform a full cross-check of all Test Case IDs (`UT_L1_...`, `UT_L2_...`, `ST_L3_...`) and the exact cart total (`1,915,000 VND`) after all suites pass 100%. |
 
 ---
 
-## PHẦN B: LƯU TRỮ CÁC CÂU LỆNH PROMPT AI ĐÃ DÙNG (MINH CHỨNG 10% ĐIỂM AI - LAB 4)
+## AI APPENDIX: AI APPLICATION EVIDENCE & PROMPT ENGINEERING LOG (10% RUBRIC SCORE - LAB 4)
 
-Thực hiện theo mục `Note iii. Có thể sử dụng các công cụ AI để thực hiện` trong [LabTesting.txt](file:///c:/Users/DELL/Downloads/lab%20SWT/LabTesting.txt) và tiêu chí chấm **`AI (0.1 = 10% điểm)`** tại Sheet `Lab4` của file `barem lab.xlsx`, nhóm đã ứng dụng AI có kiểm soát và lưu lại toàn bộ lịch sử các câu lệnh **Prompt AI** cùng bước **Kiểm chứng & Hiệu chỉnh của con người (Human-in-the-Loop)** như sau:
+In accordance with `Note iii. AI tools may be used for implementation` in [LabTesting.txt](file:///c:/Users/DELL/Downloads/lab%20SWT/LabTesting.txt) and the **`AI (0.1 = 10% score)`** grading criterion in Sheet `Lab4` of `barem lab.xlsx`, our team applied a controlled **Human-in-the-Loop AI-Assisted Software Testing** workflow throughout the Software Testing Life Cycle (STLC).
 
-### Prompt 1 — Phân tích Barem điểm & Lập kế hoạch phân công nhóm 5 người
-- **Câu lệnh Prompt đã dùng**:
-  > *"Dựa trên file yêu cầu `LabTesting.txt` (gồm 4 bài Lab: 1. JUnit5, 2. NodeJS, 3. Selenium web testing, 4. Viết test plan theo template của ISTQB) và file `barem lab.xlsx` đi kèm, hãy phân tích các tiêu chí chấm điểm của từng bài Lab và lập kế hoạch phân công chi tiết cho nhóm 5 thành viên (M1 → M5) sao cho cân bằng khối lượng công việc và đạt tối đa điểm số."*
-- **Giá trị AI mang lại & Kiểm chứng của nhóm**:
-  - AI giúp phát hiện kịp thời rằng ở **Sheet `Lab2` (NodeJS)** trong `barem lab.xlsx` có chấm **20% Dùng CSV** và **10% Cover code** (dù đề chữ không ghi rõ), và ở **Sheet `Lab4`** có chấm **10% AI**. Nhờ đó nhóm bổ sung ngay CSV và Coverage 100% vào bài NodeJS để không bị mất 30% điểm.
+### Table 1 — AI Application Matrix Across STLC Phases
 
-### Prompt 2 — Thiết kế 7 hàm Java liên kết nhau & Bộ dữ liệu CSV đạt 100% JaCoCo Branch Coverage (Lab 1)
-- **Câu lệnh Prompt đã dùng**:
-  > *"Hãy thiết kế class Java `EgaAutocareBillingService` theo chủ đề Hệ thống Phụ tùng & Bảo dưỡng Ô tô EGA Autocare gồm đúng 7 hàm liên quan chặt chẽ với nhau (Hàm 7 gọi liên hoàn từ Hàm 1 đến Hàm 6), mỗi hàm có ít nhất 1 cấu trúc điều kiện `if-else`, chỉ sử dụng kiểu dữ liệu nguyên thủy/String để nạp trực tiếp từ `@CsvFileSource` trong JUnit 5. Đồng thời sinh bộ dữ liệu test trong 7 file `.csv` bao phủ 100% cả Instruction Coverage và Branch Coverage trên JaCoCo."*
-- **Kiểm chứng & Hiệu chỉnh của nhóm**:
-  - Chạy kiểm chứng thực tế bằng lệnh `mvn clean test` với `jacoco-maven-plugin 0.8.12`: Đạt chính xác **39/39 test cases Pass**, `0 missed instructions (225/225)` và `0 missed branches (46/46)`.
+| STLC Phase | AI Application Area | Role of AI Assistant | Human-in-the-Loop Verification (Team Members) |
+| :--- | :--- | :--- | :--- |
+| **1. Requirements & Rubric Analysis** | Analyzing `LabTesting.txt` & `barem lab.xlsx` | Parsed grading weights and identified hidden rubric criteria across Excel sheets | **M1 (Nguyễn Hoàng Vinh)** & **M5 (Trần Thanh Nguyên)** verified every column in `barem lab.xlsx` and finalized the 5-member task allocation |
+| **2. Test Design & CSV Generation** | Lab 1 (JUnit 5) & Lab 2 (Node.js/Jest) | Suggested BVA/EP test vectors and detected unreachable code branches | **M1 (Nguyễn Hoàng Vinh)** & **M2 (Đinh Thành Trung)** executed JaCoCo (`0.8.12`) and Jest Coverage to confirm `100% Branch Coverage` |
+| **3. E2E Web Test Automation** | Lab 3 (Selenium WebDriver) | Analyzed DOM structure on `ega-autocare.mysapo.net` and scaffolded `@Order(1)` → `@Order(6)` methods | **M3 (Trần Công Tiến)** & **M4 (Văn Thái Trung)** debugged live Chrome execution, fixed CSS selector collisions, and verified the `1,915,000 VND` cart total |
+| **4. ISTQB Documentation & QA** | Lab 4 (`Lab4_ISTQB_TestPlan.docx`) | Structured the 12 sections following IEEE 829 / ISTQB CTFL v4.0 templates | **M5 (Trần Thanh Nguyên)** cross-referenced all Test Case IDs, coverage metrics, and file paths against the live repository |
 
-### Prompt 3 — Rà soát lỗi Logic & Bẫy "Nhánh chết (Unreachable Code)" trong thiết kế NodeJS/Jest (Lab 2)
-- **Câu lệnh Prompt đã dùng**:
-  > *"Đây là bảng thiết kế 4 thành phần/hàm NodeJS & React (`ServiceBookingButton`, `MembershipGreetingBanner`, `AutoServiceCard`, `calculateServiceInvoice`) của Thành viên 2. Hãy đóng vai trò QA Lead rà soát xem có lỗi logic nghiệp vụ, bẫy đọc chuỗi rỗng từ file CSV hay nhánh chết (Unreachable Branch) nào làm cản trở việc đạt 100% Branch Coverage trong Jest hay không."*
-- **Kiểm chứng & Hiệu chỉnh của nhóm**:
-  - Phát hiện và sửa 3 lỗi quan trọng trước khi chốt code:
-    1. Chỉnh lại bậc thang điều kiện Voucher (`EGAFREE >= 300k` → giảm `50k`, `EGASUPER >= 500k` → giảm `100k`, `EGAMEGA >= 1.000.000đ` → giảm `300k`) để vừa thuận chiều logic thực tế, vừa kích hoạt được nhánh khống chế trần giảm giá 50% (`isCapped = true`).
-    2. Gộp kiểm tra `customerTier` vào 1 khối `if - else if - else` duy nhất để loại bỏ nhánh chết.
-    3. Thêm `.trim() !== ''` khi kiểm tra `customerName` và `customAnnouncement` đọc từ CSV.
+---
 
-### Prompt 4 — Khảo sát cấu trúc DOM thực tế & Khắc phục lỗi Selector Selenium trên `ega-autocare.mysapo.net` (Lab 3)
-- **Câu lệnh Prompt đã dùng**:
-  > *"Kiểm tra cấu trúc HTML thực tế của trang đăng nhập `/account/login`, trang sản phẩm và trang giỏ hàng `/cart` trên `https://ega-autocare.mysapo.net/`. Viết 6 hàm JUnit 5 Selenium (`@Order(1)` đến `@Order(6)`) cho 6 yêu cầu: Access web, Login đúng, Login sai (chưa có tài khoản), Tìm kiếm, Mua ít nhất 3 sản phẩm khác nhau và Kiểm tra tổng giá tiền giỏ hàng khớp chính xác 100%."*
-- **Kiểm chứng & Hiệu chỉnh của nhóm**:
-  - Khi chạy thử trên trình duyệt thật, nhóm phát hiện selector `button[type='submit']` bị bấm nhầm vào nút Tìm kiếm trên thanh Header thay vì nút Đăng nhập, và `span.price` đầu tiên nằm trong khối ẩn làm `visibilityOfElementLocated` bị Timeout.
-  - Nhóm đã tinh chỉnh lại selector thành `#customer_login button.btn-login`, lấy giá sản phẩm qua `span.price.text-h4`, chọn mua 3 sản phẩm khác nhau (`/michelin-m2566-bom-lop` `1.180.000₫` + `/areon-tinh-dau-treo-xe` `285.000₫` + `/autoguard-bat-phu-xe` `450.000₫`) và dùng `assertEquals(expectedTotal, actualTotal)` xác nhận tổng giỏ hàng đúng **`1.915.000 VND`**.
+### Table 2 — Detailed Log of 6 AI Prompts Used & Human Verification Results
 
-### Prompt 5 — Soạn thảo Kế hoạch Kiểm thử chuẩn Quốc tế ISTQB / IEEE 829 (Lab 4)
-- **Câu lệnh Prompt đã dùng**:
-  > *"Dựa trên toàn bộ thông số kỹ thuật thực tế đã triển khai ở Lab 1 (`EgaAutocareBillingService` - 39 test cases CSV), Lab 2 (`Lab2_NodeJS` - 41 test cases Jest & 3 Snapshots) và Lab 3 (`EgaAutocareTest` - 6 kịch bản Selenium trên `ega-autocare.mysapo.net`), hãy soạn thảo tài liệu ISTQB Test Plan đầy đủ các mục chuẩn IEEE 829 (Test Plan Identifier, Introduction, Test Items, Features to be Tested, Features NOT to be Tested, Approach/Strategy, Pass/Fail Criteria, Suspension/Resumption Criteria, Test Deliverables, Schedule, Environment, Risks) cho hệ thống EGA Autocare."*
-- **Kiểm chứng & Hiệu chỉnh của nhóm**:
-  - Nhóm rà soát toàn bộ mã định danh Test Case (`UT_L1_...`, `TC_GREET_...`, `TC_DISC_...`, `ST_L3_...`), số liệu Coverage và tên file bàn giao trong Test Plan để đảm bảo khớp 100% với code thực tế trong Repository.
+#### Prompt 1 — Grading Rubric Analysis & 5-Member Workload Allocation
+- **Prompt Used**:
+  > *"Based on the requirements in `LabTesting.txt` (4 Labs: 1. JUnit5, 2. NodeJS, 3. Selenium web testing, 4. ISTQB Test Plan) and the grading rubric `barem lab.xlsx`, analyze the scoring criteria for each Lab and create a balanced task allocation plan for our 5 team members (M1 - Nguyễn Hoàng Vinh, M2 - Đinh Thành Trung, M3 - Trần Công Tiến, M4 - Văn Thái Trung, M5 - Trần Thanh Nguyên) to maximize our score."*
+- **AI Output & Human Verification**:
+  - AI highlighted that **Sheet `Lab2` (NodeJS)** in `barem lab.xlsx` grades **20% CSV usage** and **10% Code Coverage** (even though not explicitly stated in the text prompt), and **Sheet `Lab4`** grades **10% AI usage**. Our team immediately integrated CSV data-driven testing and 100% Jest coverage into Lab 2 to secure the full 100% score.
+
+#### Prompt 2 — Designing 7 Interconnected Java Methods & CSV Datasets for 100% JaCoCo Coverage (Lab 1 - M1: Nguyễn Hoàng Vinh)
+- **Prompt Used**:
+  > *"Design the Java class `EgaAutocareBillingService` for the EGA Autocare Automotive Parts & Maintenance domain with 7 interconnected methods (where Method 7 chains Methods 1 through 6), each containing at least one `if-else` conditional statement and using primitive/String parameters compatible with JUnit 5 `@CsvFileSource`. Generate 7 `.csv` test files achieving 100% Instruction Coverage and 100% Branch Coverage in JaCoCo."*
+- **Human Verification & Refinement (M1 - Nguyễn Hoàng Vinh)**:
+  - Executed `mvn clean test` with `jacoco-maven-plugin 0.8.12`: Verified **39/39 test cases Pass**, `0 missed instructions (225/225 = 100%)`, and `0 missed branches (46/46 = 100%)`.
+
+#### Prompt 3 — Logic Review & Eliminating Unreachable Branches in Node.js/Jest (Lab 2 - M2: Đinh Thành Trung)
+- **Prompt Used**:
+  > *"Review the design of our 4 Node.js & React modules (`ServiceBookingButton`, `MembershipGreetingBanner`, `AutoServiceCard`, `calculateServiceInvoice`) for Lab 2. Act as a QA Lead to identify any business logic flaws, CSV empty-string edge cases, or unreachable branches that would prevent achieving 100% Branch Coverage in Jest."*
+- **Human Verification & Refinement (M2 - Đinh Thành Trung)**:
+  - Identified and fixed 3 critical issues prior to finalizing the code:
+    1. Adjusted voucher minimum order thresholds (`EGAFREE >= 300k` → `50k` off, `EGASUPER >= 500k` → `100k` off, `EGAMEGA >= 1,000,000 VND` → `300k` off) so that a `1,000,000 VND` order with `VIP (20%) + FirstTime (5%) + EGAMEGA (300k) = 550k > 500k` triggers the 50% maximum discount cap branch (`isCapped = true`).
+    2. Consolidated `customerTier` validation into a single `if - else if - else` chain to eliminate dead branches.
+    3. Added `.trim() !== ''` checks when reading `customerName` and `customAnnouncement` from CSV files.
+
+#### Prompt 4 — Live DOM Inspection & Fixing Selenium CSS Selectors on `ega-autocare.mysapo.net` (Lab 3 - M3: Trần Công Tiến & M4: Văn Thái Trung)
+- **Prompt Used**:
+  > *"Inspect the live HTML DOM structure of `/account/login`, product detail pages, and `/cart` on `https://ega-autocare.mysapo.net/`. Write 6 ordered JUnit 5 Selenium test methods (`@Order(1)` to `@Order(6)`) covering: Website Access, Valid Login, Invalid Login (unregistered account), Product Search, Buying at least 3 distinct products, and Verifying the exact shopping cart total."*
+- **Human Verification & Refinement (M3 - Trần Công Tiến & M4 - Văn Thái Trung)**:
+  - During live Chrome execution, the team discovered that generic selector `button[type='submit']` clicked the header search button instead of the login button, and the first `.price` element on product pages was hidden inside an inactive variant node.
+  - The team refined the selectors to `#customer_login button.btn-login` and `span.price.text-h4`, selected 3 distinct in-stock products (`/michelin-m2566-bom-lop` `1,180,000 VND` + `/areon-tinh-dau-treo-xe` `285,000 VND` + `/autoguard-bat-phu-xe` `450,000 VND`), and verified via `assertEquals(expectedTotal, actualTotal)` that the cart total equals **`1,915,000 VND`** (`6/6 tests Pass`).
+
+#### Prompt 5 — Authoring the International Standard ISTQB / IEEE 829 Software Test Plan (Lab 4 - M5: Trần Thanh Nguyên)
+- **Prompt Used**:
+  > *"Based on the verified specifications from Lab 1 (`EgaAutocareBillingService` - 39 CSV test cases), Lab 2 (`Lab2_NodeJS` - 41 Jest test cases & 3 Snapshots), and Lab 3 (`EgaAutocareTest` - 6 Selenium E2E scenarios on `ega-autocare.mysapo.net`), draft a comprehensive ISTQB Software Test Plan covering all IEEE 829 sections (Test Plan Identifier, Introduction, Test Items, Features to be Tested, Features NOT to be Tested, Approach/Strategy, Pass/Fail Criteria, Suspension/Resumption Criteria, Test Deliverables, Staffing & Schedule, Environment, Risks) in English."*
+- **Human Verification & Refinement (M5 - Trần Thanh Nguyên)**:
+  - Cross-checked all Test Case IDs (`UT_L1_01` → `07`, `UT_L2_...`, `ST_L3_001` → `006`), coverage numbers, member names, and deliverable paths to ensure 100% alignment with the repository.
+
+#### Prompt 6 — Risk-Based Testing Matrix & Contingency Planning per ISTQB CTFL v4.0 (Lab 4 - M5: Trần Thanh Nguyên)
+- **Prompt Used**:
+  > *"Following the Risk-Based Testing methodology in ISTQB CTFL v4.0, analyze the technical/product risks and project management risks across our 3 automated testing suites (JUnit 5 CSV, Node.js Jest Coverage, Selenium E2E on Sapo Web), evaluate Likelihood and Impact, and propose concrete Mitigation Strategies and Contingency Plans."*
+- **Human Verification & Refinement (M5 - Trần Thanh Nguyên)**:
+  - Standardized **7 risk items (`R-01` → `R-07`)** in Section 12 of the Test Plan, directly reflecting real engineering challenges encountered and resolved during test execution (such as resetting `/cart/clear`, handling CSV whitespace, and scoping Sapo CSS selectors).
+
+---
+
+### Table 3 — Quality Control & AI Governance Principles in Software Testing
+
+1. **Zero Blind-Trust Verification**: Every test script, CSV dataset, and CSS selector suggested by AI was compiled and executed against real testing engines (`mvn clean test`, `npx jest --coverage`, and live Google Chrome).
+2. **Data Privacy & Safe Execution**: Only mock datasets and a dedicated test account (`linhcampochia@gmail.com`) were used, stopping prior to checkout submission on the live storefront.
+3. **Bidirectional Traceability**: 100% of features in the Test Plan (`FT-01` → `FT-12`) trace directly to automated `@Test` methods and Excel Test Case sheets (`TestCase_Lab1/2/3.xls`).

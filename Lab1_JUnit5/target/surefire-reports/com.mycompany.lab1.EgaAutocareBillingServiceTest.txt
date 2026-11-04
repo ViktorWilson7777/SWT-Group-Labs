@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.mycompany.lab1.EgaAutocareBillingServiceTest
 -------------------------------------------------------------------------------
-Tests run: 39, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.697 s -- in com.mycompany.lab1.EgaAutocareBillingServiceTest
+Tests run: 39, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.330 s -- in com.mycompany.lab1.EgaAutocareBillingServiceTest
