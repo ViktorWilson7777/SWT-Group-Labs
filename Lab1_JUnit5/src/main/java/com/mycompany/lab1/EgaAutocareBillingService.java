@@ -1,13 +1,14 @@
 package com.mycompany.lab1;
 
 /**
- * Lab 1 - JUnit 5: Hệ thống tính hóa đơn mua phụ tùng & lắp đặt bảo dưỡng ô tô EGA Autocare.
- * Gồm 7 hàm liên kết chặt chẽ với nhau, mỗi hàm đều có điều kiện rẽ nhánh if-else.
+ * Lab 1 - JUnit 5: Automotive Parts & Maintenance Billing Service for EGA Autocare.
+ * Consists of 7 interconnected methods, each containing conditional if-else branches.
+ * Author: M1 - Nguyen Hoang Vinh (Leader)
  */
 public class EgaAutocareBillingService {
 
     /**
-     * Hàm 1: Kiểm tra tính hợp lệ của thông tin đầu vào đơn hàng phụ tùng.
+     * Function 1: Validate order input parameters (quantity, unit price, and delivery distance).
      */
     public boolean isValidOrderInput(int itemQuantity, double unitPrice, double distanceKm) {
         if (itemQuantity <= 0 || itemQuantity > 100) {
@@ -20,7 +21,7 @@ public class EgaAutocareBillingService {
     }
 
     /**
-     * Hàm 2: Tính tổng tiền phụ tùng (áp dụng chiết khấu khi mua theo bộ từ 4 món hoặc mua sỉ từ 10 món).
+     * Function 2: Calculate spare parts subtotal (applies bulk discounts for >= 4 items or >= 10 items).
      */
     public double calculatePartsSubtotal(int itemQuantity, double unitPrice) {
         if (itemQuantity <= 0 || unitPrice <= 0) {
@@ -35,7 +36,7 @@ public class EgaAutocareBillingService {
     }
 
     /**
-     * Hàm 3: Tính phí công lắp đặt tại gara EGA Autocare theo gói dịch vụ (NONE, STANDARD, PREMIUM, hoặc gói cơ bản).
+     * Function 3: Calculate garage installation labor fee by service package (NONE, PREMIUM, STANDARD, or BASIC).
      */
     public double calculateInstallationFee(String servicePackage, int itemQuantity) {
         if (itemQuantity <= 0 || "NONE".equalsIgnoreCase(servicePackage)) {
@@ -50,7 +51,7 @@ public class EgaAutocareBillingService {
     }
 
     /**
-     * Hàm 4: Tính số tiền giảm giá theo hạng thẻ thành viên (VIP, GOLD, SILVER, REGULAR).
+     * Function 4: Calculate loyalty membership discount amount by tier (VIP, GOLD, SILVER, REGULAR).
      */
     public double calculateMemberDiscount(double baseAmount, String memberTier) {
         if (baseAmount <= 0) {
@@ -67,7 +68,7 @@ public class EgaAutocareBillingService {
     }
 
     /**
-     * Hàm 5: Tính phí giao phụ tùng tận nơi (miễn phí khi nhận tại gara hoặc đơn sau giảm >= 2.000.000đ).
+     * Function 5: Calculate delivery shipping fee (free for garage pickup or net order >= 2,000,000 VND).
      */
     public double calculateShippingFee(double distanceKm, double amountAfterDiscount) {
         if (distanceKm <= 0 || amountAfterDiscount >= 2000000.0) {
@@ -80,7 +81,7 @@ public class EgaAutocareBillingService {
     }
 
     /**
-     * Hàm 6: Tính thuế GTGT (VAT 8%) khi khách hàng yêu cầu xuất hóa đơn VAT.
+     * Function 6: Calculate 8% Value-Added Tax (VAT) when a VAT invoice is requested.
      */
     public double calculateVatTax(double taxableAmount, boolean requireVatInvoice) {
         if (taxableAmount <= 0) {
@@ -93,8 +94,8 @@ public class EgaAutocareBillingService {
     }
 
     /**
-     * Hàm 7: Hàm tổng hợp điều phối gọi liên hoàn từ Hàm 1 đến Hàm 6 để tính tổng thanh toán cuối cùng.
-     * Hóa đơn lớn từ 10.000.000đ trở lên được tặng thêm ưu đãi giảm trực tiếp 200.000đ.
+     * Function 7: Orchestrator method chaining Functions 1 through 6 to compute the final invoice total.
+     * High-value invoices (>= 10,000,000 VND) receive an additional 200,000 VND direct rebate.
      */
     public double calculateFinalInvoiceTotal(
             int itemQuantity,
@@ -126,4 +127,3 @@ public class EgaAutocareBillingService {
         }
     }
 }
-

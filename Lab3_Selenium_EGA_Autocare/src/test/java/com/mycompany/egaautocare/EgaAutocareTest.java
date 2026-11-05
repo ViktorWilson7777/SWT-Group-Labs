@@ -20,11 +20,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
- * Lab 3: Automation Testing với Selenium trên hệ thống EGA Autocare
- * Website: https://ega-autocare.mysapo.net/
- * Phân công:
- * - Thành viên 3 (M3): TC01 -> TC04 (Access web, Login hợp lệ, Login không hợp lệ, Search sản phẩm)
- * - Thành viên 4 (M4): TC05 -> TC06 (Mua ít nhất 3 sản phẩm khác nhau, Kiểm tra tổng giá tiền giỏ hàng)
+ * Lab 3: End-to-End Web Automation Testing with Selenium WebDriver on EGA Autocare
+ * Target Website: https://ega-autocare.mysapo.net/
+ * Team Allocation:
+ * - Member 3 (M3 - Tran Cong Tien): TC01 -> TC04 (Access website, Valid Login, Invalid Login, Product Search)
+ * - Member 4 (M4 - Van Thai Trung): TC05 -> TC06 (Buy at least 3 distinct products, Verify exact shopping cart total)
  */
 @TestMethodOrder(OrderAnnotation.class)
 public class EgaAutocareTest {
@@ -33,7 +33,7 @@ public class EgaAutocareTest {
     private static WebDriverWait wait;
     private static final String BASE_URL = "https://ega-autocare.mysapo.net";
 
-    // Lưu tổng tiền kỳ vọng khi thêm 3 sản phẩm ở TC05 để đối chiếu chính xác ở TC06
+    // Stores the expected accumulated cart total when adding 3 products in TC05 for exact comparison in TC06
     private static long expectedCartTotal = 0L;
 
     @BeforeAll
@@ -43,13 +43,13 @@ public class EgaAutocareTest {
         options.addArguments("--disable-notifications");
         options.addArguments("--start-maximized");
 
-        // Hỗ trợ chạy headless nếu truyền cờ -Dheadless=true
+        // Support headless execution when passing -Dheadless=true
         if (Boolean.getBoolean("headless")) {
             options.addArguments("--headless=new");
             options.addArguments("--window-size=1920,1080");
         }
 
-        // Selenium 4 tự động quản lý ChromeDriver thông qua Selenium Manager
+        // Selenium 4 automatically resolves and manages ChromeDriver via Selenium Manager
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
@@ -62,31 +62,31 @@ public class EgaAutocareTest {
         }
     }
 
-    // ==========================================
-    // PHẦN CỦA THÀNH VIÊN 3 (M3): TC01 -> TC04
-    // ==========================================
+    // ===============================================================
+    // PART 1 - MEMBER 3 (M3 - Tran Cong Tien): TC01 -> TC04
+    // ===============================================================
 
     @Test
     @Order(1)
     public void test01_AccessWeb() {
-        System.out.println("=== TC01: Kiểm thử truy cập website EGA Autocare ===");
+        System.out.println("=== TC01: Test accessing EGA Autocare e-commerce website ===");
         driver.get(BASE_URL);
 
         String title = driver.getTitle();
-        System.out.println("Tiêu đề trang: " + title);
+        System.out.println("Page Title: " + title);
         assertTrue(title.contains("EGA Autocare") || title.toLowerCase().contains("autocare"),
-                "Tiêu đề trang phải chứa EGA Autocare");
+                "Page title must contain 'EGA Autocare'");
 
         String currentUrl = driver.getCurrentUrl();
-        System.out.println("URL hiện tại: " + currentUrl);
+        System.out.println("Current URL: " + currentUrl);
         assertTrue(currentUrl.contains("ega-autocare.mysapo.net"),
-                "URL phải thuộc domain ega-autocare.mysapo.net");
+                "Current URL must belong to domain ega-autocare.mysapo.net");
     }
 
     @Test
     @Order(2)
     public void test02_LoginSuccess() {
-        System.out.println("=== TC02: Kiểm thử đăng nhập tài khoản hợp lệ ===");
+        System.out.println("=== TC02: Test valid customer login ===");
         driver.manage().deleteAllCookies();
         driver.get(BASE_URL + "/account/login");
 
@@ -99,27 +99,27 @@ public class EgaAutocareTest {
         passwordInput.clear();
         passwordInput.sendKeys("03022006Tien!");
 
-        // Click đúng nút Đăng nhập nằm trong form #customer_login
+        // Click the Login button scoped inside the #customer_login form
         WebElement loginBtn = driver.findElement(By.cssSelector("#customer_login button.btn-login"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginBtn);
 
-        // Đợi hệ thống chuyển hướng sang trang tài khoản khách hàng (/account)
+        // Wait until redirected away from /account/login to the customer account page (/account)
         wait.until(ExpectedConditions.not(ExpectedConditions.urlContains("/account/login")));
 
         String currentUrl = driver.getCurrentUrl();
         String pageSource = driver.getPageSource();
-        System.out.println("URL sau khi đăng nhập thành công: " + currentUrl);
+        System.out.println("URL after successful login: " + currentUrl);
 
         assertFalse(currentUrl.contains("/account/login"),
-                "Sau khi đăng nhập đúng phải thoát khỏi trang /account/login");
+                "User must be redirected away from /account/login after valid login");
         assertTrue(currentUrl.contains("/account") && pageSource.contains("linhcampochia@gmail.com"),
-                "Trang tài khoản phải hiển thị đúng email khách hàng đã đăng nhập");
+                "Account page must display the logged-in customer email");
     }
 
     @Test
     @Order(3)
     public void test03_LoginFail_Unregistered() {
-        System.out.println("=== TC03: Kiểm thử đăng nhập thất bại với tài khoản chưa đăng ký ===");
+        System.out.println("=== TC03: Test login failure with unregistered account credentials ===");
         driver.manage().deleteAllCookies();
         driver.get(BASE_URL + "/account/logout");
         driver.get(BASE_URL + "/account/login");
@@ -137,25 +137,25 @@ public class EgaAutocareTest {
         WebElement loginBtn = driver.findElement(By.cssSelector("#customer_login button.btn-login"));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginBtn);
 
-        // Chờ thông báo lỗi xuất hiện trong form #customer_login
+        // Wait for the error alert message inside the #customer_login form
         WebElement errorAlert = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#customer_login .text-error, #customer_login .alert")));
         String errorText = errorAlert.getText().trim();
         String currentUrl = driver.getCurrentUrl();
 
-        System.out.println("URL sau khi đăng nhập sai: " + currentUrl);
-        System.out.println("Thông báo lỗi hiển thị: " + errorText);
+        System.out.println("URL after failed login: " + currentUrl);
+        System.out.println("Displayed error message: " + errorText);
 
         assertTrue(currentUrl.contains("/account/login"),
-                "Đăng nhập sai phải giữ người dùng ở lại trang /account/login");
+                "Failed login must keep the user on /account/login");
         assertTrue(errorText.contains("Thông tin đăng nhập không chính xác"),
-                "Phải hiển thị thông báo 'Thông tin đăng nhập không chính xác.'");
+                "Must display the invalid login error message");
     }
 
     @Test
     @Order(4)
     public void test04_SearchProduct() {
-        System.out.println("=== TC04: Kiểm thử tính năng tìm kiếm sản phẩm ===");
+        System.out.println("=== TC04: Test product search functionality ===");
         driver.get(BASE_URL);
 
         List<WebElement> searchInputs = driver.findElements(By.name("query"));
@@ -191,33 +191,33 @@ public class EgaAutocareTest {
 
         wait.until(ExpectedConditions.urlContains("/search"));
         String currentUrl = driver.getCurrentUrl();
-        System.out.println("URL trang kết quả tìm kiếm: " + currentUrl);
+        System.out.println("Search results URL: " + currentUrl);
         assertTrue(currentUrl.contains("query=") || currentUrl.contains("q="),
-                "URL phải chứa tham số query tìm kiếm");
+                "Search URL must contain the query parameter");
 
         List<WebElement> results = driver.findElements(By.cssSelector(".product-item, .product-card, .search-result, h1, h2, .section-heading"));
-        assertFalse(results.isEmpty(), "Trang tìm kiếm phải hiển thị danh sách sản phẩm kết quả");
+        assertFalse(results.isEmpty(), "Search results page must display matching product items");
         assertTrue(driver.getPageSource().toLowerCase().contains("bơm lốp"),
-                "Kết quả tìm kiếm phải chứa sản phẩm liên quan đến từ khóa 'bơm lốp'");
+                "Search results page must contain products matching the keyword 'bơm lốp'");
     }
 
-    // ==========================================
-    // PHẦN CỦA THÀNH VIÊN 4 (M4): TC05 -> TC06
-    // ==========================================
+    // ===============================================================
+    // PART 2 - MEMBER 4 (M4 - Van Thai Trung): TC05 -> TC06
+    // ===============================================================
 
     @Test
     @Order(5)
     public void test05_BuyAtLeast3Products() {
-        System.out.println("=== TC05: Kiểm thử mua ít nhất 3 sản phẩm bất kỳ vào giỏ hàng ===");
-        // Làm sạch giỏ hàng trước khi thêm 3 sản phẩm mới
+        System.out.println("=== TC05: Test selecting and adding at least 3 distinct products to cart ===");
+        // Clear the shopping cart prior to adding 3 new products
         driver.get(BASE_URL + "/cart/clear");
         expectedCartTotal = 0L;
 
-        // Danh sách 3 sản phẩm phụ kiện ô tô khác nhau trên EGA Autocare
+        // List of 3 distinct automotive products on EGA Autocare
         String[] productSlugs = {
-            "/michelin-m2566-bom-lop",       // SP 1: Bơm lốp Michelin M2566 (1.180.000₫)
-            "/areon-tinh-dau-treo-xe",       // SP 2: Tinh dầu treo xe Areon (285.000₫)
-            "/autoguard-bat-phu-xe"          // SP 3: Bạt phủ xe ô tô AutoGuard (450.000₫)
+            "/michelin-m2566-bom-lop",       // Product 1: Michelin M2566 Tire Inflator (1,180,000 VND)
+            "/areon-tinh-dau-treo-xe",       // Product 2: Areon Car Hanging Perfume (285,000 VND)
+            "/autoguard-bat-phu-xe"          // Product 3: AutoGuard Car Cover (450,000 VND)
         };
 
         for (int i = 0; i < productSlugs.length; i++) {
@@ -226,7 +226,7 @@ public class EgaAutocareTest {
 
             wait.until(ExpectedConditions.presenceOfElementLocated(By.id("add-to-cart-form")));
 
-            // Bóc tách đơn giá hiển thị của sản phẩm trên trang chi tiết (span.price.text-h4)
+            // Extract the displayed unit price on the product detail page (span.price.text-h4)
             List<WebElement> priceEls = driver.findElements(By.cssSelector("span.price.text-h4, #add-to-cart-form .price"));
             String rawPrice = "";
             for (WebElement el : priceEls) {
@@ -239,9 +239,9 @@ public class EgaAutocareTest {
             long itemPrice = Long.parseLong(rawPrice.replaceAll("[^0-9]", ""));
             expectedCartTotal += itemPrice;
 
-            System.out.println("Sản phẩm " + (i + 1) + " (" + slug + ") - Đơn giá: " + itemPrice + " VND (" + rawPrice + ")");
+            System.out.println("Product " + (i + 1) + " (" + slug + ") - Unit Price: " + itemPrice + " VND (" + rawPrice + ")");
 
-            // Bấm nút THÊM VÀO GIỎ
+            // Click the Add to Cart button
             WebElement addToCartBtn = driver.findElement(By.cssSelector("#add-to-cart-form button[name='addtocart'], button.btn-add-to-cart"));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addToCartBtn);
 
@@ -250,7 +250,7 @@ public class EgaAutocareTest {
             } catch (InterruptedException ignored) {}
         }
 
-        // Mở trang giỏ hàng /cart để xác nhận đã có đủ 3 sản phẩm
+        // Navigate to /cart to verify all 3 products are present in the cart
         driver.get(BASE_URL + "/cart");
         wait.until(ExpectedConditions.urlContains("/cart"));
         try {
@@ -259,40 +259,40 @@ public class EgaAutocareTest {
 
         List<WebElement> cartQtyInputs = driver.findElements(
                 By.cssSelector("input[name='Updates'], input[name='updates[]'], .cart-item, tr.line-item, input[type='number']"));
-        System.out.println("Số dòng sản phẩm trong giỏ hàng: " + cartQtyInputs.size());
-        System.out.println("Tổng tiền kỳ vọng của 3 sản phẩm: " + expectedCartTotal + " VND");
+        System.out.println("Cart line item elements found: " + cartQtyInputs.size());
+        System.out.println("Expected total of 3 products: " + expectedCartTotal + " VND");
 
-        assertTrue(driver.getCurrentUrl().contains("/cart"), "Phải điều hướng vào trang giỏ hàng /cart");
-        assertTrue(expectedCartTotal > 0, "Tổng giá trị của 3 sản phẩm đã chọn phải lớn hơn 0");
+        assertTrue(driver.getCurrentUrl().contains("/cart"), "Must navigate to shopping cart page /cart");
+        assertTrue(expectedCartTotal > 0, "Expected total price of the 3 selected products must be greater than 0");
     }
 
     @Test
     @Order(6)
     public void test06_VerifyCartTotal() {
-        System.out.println("=== TC06: Kiểm thử tính đúng đắn của tổng giá tiền trong giỏ hàng ===");
+        System.out.println("=== TC06: Test verifying shopping cart total price accuracy ===");
         driver.get(BASE_URL + "/cart");
 
         try {
             Thread.sleep(2000);
         } catch (InterruptedException ignored) {}
 
-        // 1. Lấy tổng tiền từ 3 sản phẩm đã mua ở TC05 (1.180.000 + 285.000 + 450.000 = 1.915.000 VND)
+        // 1. Retrieve expected total from the 3 products added in TC05 (1,180,000 + 285,000 + 450,000 = 1,915,000 VND)
         long expectedTotal = expectedCartTotal > 0 ? expectedCartTotal : (1180000L + 285000L + 450000L);
-        System.out.println("Tổng tiền kỳ vọng (SP1 + SP2 + SP3): " + expectedTotal + " VND");
+        System.out.println("Expected Cart Total (Product 1 + Product 2 + Product 3): " + expectedTotal + " VND");
 
-        // 2. Bóc tách tổng tiền thực tế hiển thị tại mục 'TỔNG CỘNG' (.cart-total .price) trên trang /cart
+        // 2. Parse the actual total price displayed in '.cart-total .price' on /cart
         WebElement totalElement = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".cart-total .price")));
         String rawTotalText = totalElement.getText().trim();
-        System.out.println("Chuỗi TỔNG CỘNG hiển thị trên giỏ hàng: '" + rawTotalText + "'");
-        assertFalse(rawTotalText.isEmpty(), "Chuỗi tổng tiền trên giỏ hàng không được rỗng");
+        System.out.println("Displayed Cart Total Text: '" + rawTotalText + "'");
+        assertFalse(rawTotalText.isEmpty(), "Displayed cart total string must not be empty");
 
         long actualTotal = Long.parseLong(rawTotalText.replaceAll("[^0-9]", ""));
-        System.out.println("Tổng tiền thực tế trên giỏ hàng (dạng số): " + actualTotal + " VND");
+        System.out.println("Parsed Actual Cart Total (numeric): " + actualTotal + " VND");
 
-        // 3. Đối chiếu chính xác tuyệt đối giữa Tổng tiền thực tế và Tổng tiền kỳ vọng của 3 sản phẩm
+        // 3. Assert 100% exact match between Actual Cart Total and Expected Total of the 3 products
         assertEquals(expectedTotal, actualTotal,
-                "Tổng giá tiền trên giỏ hàng phải khớp chính xác 100% với tổng giá của 3 sản phẩm đã mua (1.915.000 VND)");
-        System.out.println("Xác nhận thành công: Tổng tiền giỏ hàng khớp chính xác tuyệt đối (" + actualTotal + " VND)!");
+                "Shopping cart total price must match 100% with the sum of the 3 purchased products (1,915,000 VND)");
+        System.out.println("Verification Passed: Shopping cart total matches 100% (" + actualTotal + " VND)!");
     }
 }

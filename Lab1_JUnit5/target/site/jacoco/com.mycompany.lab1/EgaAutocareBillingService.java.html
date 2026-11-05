@@ -1,100 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EgaAutocareBillingService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Lab1_JUnit5</a> &gt; <a href="index.source.html" class="el_package">com.mycompany.lab1</a> &gt; <span class="el_source">EgaAutocareBillingService.java</span></div><h1>EgaAutocareBillingService.java</h1><pre class="source lang-java linenums">package com.mycompany.lab1;
 
 /**
- * Lab 1 - JUnit 5: Hệ thống tính hóa đơn mua phụ tùng &amp; lắp đặt bảo dưỡng ô tô EGA Autocare.
- * Gồm 7 hàm liên kết chặt chẽ với nhau, mỗi hàm đều có điều kiện rẽ nhánh if-else.
+ * Lab 1 - JUnit 5: Automotive Parts &amp; Maintenance Billing Service for EGA Autocare.
+ * Consists of 7 interconnected methods, each containing conditional if-else branches.
+ * Author: M1 - Nguyen Hoang Vinh (Leader)
  */
-<span class="fc" id="L7">public class EgaAutocareBillingService {</span>
+<span class="fc" id="L8">public class EgaAutocareBillingService {</span>
 
     /**
-     * Hàm 1: Kiểm tra tính hợp lệ của thông tin đầu vào đơn hàng phụ tùng.
+     * Function 1: Validate order input parameters (quantity, unit price, and delivery distance).
      */
     public boolean isValidOrderInput(int itemQuantity, double unitPrice, double distanceKm) {
-<span class="fc bfc" id="L13" title="All 4 branches covered.">        if (itemQuantity &lt;= 0 || itemQuantity &gt; 100) {</span>
-<span class="fc" id="L14">            return false;</span>
-<span class="fc bfc" id="L15" title="All 4 branches covered.">        } else if (unitPrice &lt;= 0 || distanceKm &lt; 0) {</span>
-<span class="fc" id="L16">            return false;</span>
+<span class="fc bfc" id="L14" title="All 4 branches covered.">        if (itemQuantity &lt;= 0 || itemQuantity &gt; 100) {</span>
+<span class="fc" id="L15">            return false;</span>
+<span class="fc bfc" id="L16" title="All 4 branches covered.">        } else if (unitPrice &lt;= 0 || distanceKm &lt; 0) {</span>
+<span class="fc" id="L17">            return false;</span>
         } else {
-<span class="fc" id="L18">            return true;</span>
+<span class="fc" id="L19">            return true;</span>
         }
     }
 
     /**
-     * Hàm 2: Tính tổng tiền phụ tùng (áp dụng chiết khấu khi mua theo bộ từ 4 món hoặc mua sỉ từ 10 món).
+     * Function 2: Calculate spare parts subtotal (applies bulk discounts for &gt;= 4 items or &gt;= 10 items).
      */
     public double calculatePartsSubtotal(int itemQuantity, double unitPrice) {
-<span class="fc bfc" id="L26" title="All 4 branches covered.">        if (itemQuantity &lt;= 0 || unitPrice &lt;= 0) {</span>
-<span class="fc" id="L27">            return 0.0;</span>
-<span class="fc bfc" id="L28" title="All 2 branches covered.">        } else if (itemQuantity &gt;= 10) {</span>
-<span class="fc" id="L29">            return itemQuantity * unitPrice * 0.90;</span>
-<span class="fc bfc" id="L30" title="All 2 branches covered.">        } else if (itemQuantity &gt;= 4) {</span>
-<span class="fc" id="L31">            return itemQuantity * unitPrice * 0.95;</span>
+<span class="fc bfc" id="L27" title="All 4 branches covered.">        if (itemQuantity &lt;= 0 || unitPrice &lt;= 0) {</span>
+<span class="fc" id="L28">            return 0.0;</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        } else if (itemQuantity &gt;= 10) {</span>
+<span class="fc" id="L30">            return itemQuantity * unitPrice * 0.90;</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        } else if (itemQuantity &gt;= 4) {</span>
+<span class="fc" id="L32">            return itemQuantity * unitPrice * 0.95;</span>
         } else {
-<span class="fc" id="L33">            return itemQuantity * unitPrice;</span>
+<span class="fc" id="L34">            return itemQuantity * unitPrice;</span>
         }
     }
 
     /**
-     * Hàm 3: Tính phí công lắp đặt tại gara EGA Autocare theo gói dịch vụ (NONE, STANDARD, PREMIUM, hoặc gói cơ bản).
+     * Function 3: Calculate garage installation labor fee by service package (NONE, PREMIUM, STANDARD, or BASIC).
      */
     public double calculateInstallationFee(String servicePackage, int itemQuantity) {
-<span class="fc bfc" id="L41" title="All 4 branches covered.">        if (itemQuantity &lt;= 0 || &quot;NONE&quot;.equalsIgnoreCase(servicePackage)) {</span>
-<span class="fc" id="L42">            return 0.0;</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        } else if (&quot;PREMIUM&quot;.equalsIgnoreCase(servicePackage)) {</span>
-<span class="fc" id="L44">            return itemQuantity * 150000.0;</span>
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        } else if (&quot;STANDARD&quot;.equalsIgnoreCase(servicePackage)) {</span>
-<span class="fc" id="L46">            return itemQuantity * 80000.0;</span>
+<span class="fc bfc" id="L42" title="All 4 branches covered.">        if (itemQuantity &lt;= 0 || &quot;NONE&quot;.equalsIgnoreCase(servicePackage)) {</span>
+<span class="fc" id="L43">            return 0.0;</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        } else if (&quot;PREMIUM&quot;.equalsIgnoreCase(servicePackage)) {</span>
+<span class="fc" id="L45">            return itemQuantity * 150000.0;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        } else if (&quot;STANDARD&quot;.equalsIgnoreCase(servicePackage)) {</span>
+<span class="fc" id="L47">            return itemQuantity * 80000.0;</span>
         } else {
-<span class="fc" id="L48">            return itemQuantity * 50000.0;</span>
+<span class="fc" id="L49">            return itemQuantity * 50000.0;</span>
         }
     }
 
     /**
-     * Hàm 4: Tính số tiền giảm giá theo hạng thẻ thành viên (VIP, GOLD, SILVER, REGULAR).
+     * Function 4: Calculate loyalty membership discount amount by tier (VIP, GOLD, SILVER, REGULAR).
      */
     public double calculateMemberDiscount(double baseAmount, String memberTier) {
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (baseAmount &lt;= 0) {</span>
-<span class="fc" id="L57">            return 0.0;</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        } else if (&quot;VIP&quot;.equalsIgnoreCase(memberTier)) {</span>
-<span class="fc" id="L59">            return baseAmount * 0.15;</span>
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        } else if (&quot;GOLD&quot;.equalsIgnoreCase(memberTier)) {</span>
-<span class="fc" id="L61">            return baseAmount * 0.10;</span>
-<span class="fc bfc" id="L62" title="All 2 branches covered.">        } else if (&quot;SILVER&quot;.equalsIgnoreCase(memberTier)) {</span>
-<span class="fc" id="L63">            return baseAmount * 0.05;</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (baseAmount &lt;= 0) {</span>
+<span class="fc" id="L58">            return 0.0;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        } else if (&quot;VIP&quot;.equalsIgnoreCase(memberTier)) {</span>
+<span class="fc" id="L60">            return baseAmount * 0.15;</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        } else if (&quot;GOLD&quot;.equalsIgnoreCase(memberTier)) {</span>
+<span class="fc" id="L62">            return baseAmount * 0.10;</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        } else if (&quot;SILVER&quot;.equalsIgnoreCase(memberTier)) {</span>
+<span class="fc" id="L64">            return baseAmount * 0.05;</span>
         } else {
-<span class="fc" id="L65">            return 0.0;</span>
+<span class="fc" id="L66">            return 0.0;</span>
         }
     }
 
     /**
-     * Hàm 5: Tính phí giao phụ tùng tận nơi (miễn phí khi nhận tại gara hoặc đơn sau giảm &gt;= 2.000.000đ).
+     * Function 5: Calculate delivery shipping fee (free for garage pickup or net order &gt;= 2,000,000 VND).
      */
     public double calculateShippingFee(double distanceKm, double amountAfterDiscount) {
-<span class="fc bfc" id="L73" title="All 4 branches covered.">        if (distanceKm &lt;= 0 || amountAfterDiscount &gt;= 2000000.0) {</span>
-<span class="fc" id="L74">            return 0.0;</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        } else if (distanceKm &lt;= 10.0) {</span>
-<span class="fc" id="L76">            return 30000.0;</span>
+<span class="fc bfc" id="L74" title="All 4 branches covered.">        if (distanceKm &lt;= 0 || amountAfterDiscount &gt;= 2000000.0) {</span>
+<span class="fc" id="L75">            return 0.0;</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        } else if (distanceKm &lt;= 10.0) {</span>
+<span class="fc" id="L77">            return 30000.0;</span>
         } else {
-<span class="fc" id="L78">            return 30000.0 + (distanceKm - 10.0) * 5000.0;</span>
+<span class="fc" id="L79">            return 30000.0 + (distanceKm - 10.0) * 5000.0;</span>
         }
     }
 
     /**
-     * Hàm 6: Tính thuế GTGT (VAT 8%) khi khách hàng yêu cầu xuất hóa đơn VAT.
+     * Function 6: Calculate 8% Value-Added Tax (VAT) when a VAT invoice is requested.
      */
     public double calculateVatTax(double taxableAmount, boolean requireVatInvoice) {
-<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (taxableAmount &lt;= 0) {</span>
-<span class="fc" id="L87">            return 0.0;</span>
-<span class="fc bfc" id="L88" title="All 2 branches covered.">        } else if (requireVatInvoice) {</span>
-<span class="fc" id="L89">            return taxableAmount * 0.08;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (taxableAmount &lt;= 0) {</span>
+<span class="fc" id="L88">            return 0.0;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        } else if (requireVatInvoice) {</span>
+<span class="fc" id="L90">            return taxableAmount * 0.08;</span>
         } else {
-<span class="fc" id="L91">            return 0.0;</span>
+<span class="fc" id="L92">            return 0.0;</span>
         }
     }
 
     /**
-     * Hàm 7: Hàm tổng hợp điều phối gọi liên hoàn từ Hàm 1 đến Hàm 6 để tính tổng thanh toán cuối cùng.
-     * Hóa đơn lớn từ 10.000.000đ trở lên được tặng thêm ưu đãi giảm trực tiếp 200.000đ.
+     * Function 7: Orchestrator method chaining Functions 1 through 6 to compute the final invoice total.
+     * High-value invoices (&gt;= 10,000,000 VND) receive an additional 200,000 VND direct rebate.
      */
     public double calculateFinalInvoiceTotal(
             int itemQuantity,
@@ -103,28 +104,27 @@
             String memberTier,
             double distanceKm,
             boolean requireVatInvoice) {
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (!isValidOrderInput(itemQuantity, unitPrice, distanceKm)) {</span>
-<span class="fc" id="L107">            return -1.0;</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (!isValidOrderInput(itemQuantity, unitPrice, distanceKm)) {</span>
+<span class="fc" id="L108">            return -1.0;</span>
         } else {
-<span class="fc" id="L109">            double partsSubtotal = calculatePartsSubtotal(itemQuantity, unitPrice);</span>
-<span class="fc" id="L110">            double installationFee = calculateInstallationFee(servicePackage, itemQuantity);</span>
-<span class="fc" id="L111">            double baseAmount = partsSubtotal + installationFee;</span>
+<span class="fc" id="L110">            double partsSubtotal = calculatePartsSubtotal(itemQuantity, unitPrice);</span>
+<span class="fc" id="L111">            double installationFee = calculateInstallationFee(servicePackage, itemQuantity);</span>
+<span class="fc" id="L112">            double baseAmount = partsSubtotal + installationFee;</span>
 
-<span class="fc" id="L113">            double memberDiscount = calculateMemberDiscount(baseAmount, memberTier);</span>
-<span class="fc" id="L114">            double amountAfterDiscount = baseAmount - memberDiscount;</span>
+<span class="fc" id="L114">            double memberDiscount = calculateMemberDiscount(baseAmount, memberTier);</span>
+<span class="fc" id="L115">            double amountAfterDiscount = baseAmount - memberDiscount;</span>
 
-<span class="fc" id="L116">            double shippingFee = calculateShippingFee(distanceKm, amountAfterDiscount);</span>
-<span class="fc" id="L117">            double vatTax = calculateVatTax(amountAfterDiscount, requireVatInvoice);</span>
+<span class="fc" id="L117">            double shippingFee = calculateShippingFee(distanceKm, amountAfterDiscount);</span>
+<span class="fc" id="L118">            double vatTax = calculateVatTax(amountAfterDiscount, requireVatInvoice);</span>
 
-<span class="fc" id="L119">            double finalTotal = amountAfterDiscount + shippingFee + vatTax;</span>
+<span class="fc" id="L120">            double finalTotal = amountAfterDiscount + shippingFee + vatTax;</span>
 
-<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (finalTotal &gt;= 10000000.0) {</span>
-<span class="fc" id="L122">                return Math.round((finalTotal - 200000.0) * 100.0) / 100.0;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">            if (finalTotal &gt;= 10000000.0) {</span>
+<span class="fc" id="L123">                return Math.round((finalTotal - 200000.0) * 100.0) / 100.0;</span>
             } else {
-<span class="fc" id="L124">                return Math.round(finalTotal * 100.0) / 100.0;</span>
+<span class="fc" id="L125">                return Math.round(finalTotal * 100.0) / 100.0;</span>
             }
         }
     }
 }
-
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

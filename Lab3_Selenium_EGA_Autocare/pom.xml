@@ -6,7 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     
-    <!-- Dependencies kế thừa từ pom.xml mẫu của giảng viên -->
+    <!-- Dependencies inherited from the instructor's reference pom.xml -->
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

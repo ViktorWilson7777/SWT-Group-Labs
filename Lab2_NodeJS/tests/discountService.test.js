@@ -2,7 +2,7 @@ const path = require('path');
 const { calculateServiceInvoice } = require('../src/services/discountService');
 const { loadCsvData } = require('../src/utils/csvLoader');
 
-describe('Lab 2 - Requirement (iv): Test Hàm có điều kiện if-else (discountService)', () => {
+describe('Lab 2 - Requirement (iv): Test Function with if-else Conditions (discountService)', () => {
   const csvPath = path.resolve(__dirname, 'fixtures/discount_test_data.csv');
   const testCases = loadCsvData(csvPath);
 

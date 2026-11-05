@@ -51,7 +51,7 @@ function calculateServiceInvoice(params = {}) {
 
   const tierDiscountAmount = Math.round(baseCost * discountRate);
 
-  // 3. Voucher discount branches (strictly increasing order thresholds: 300k -> 500k -> 1.000.000đ)
+  // 3. Voucher discount branches (strictly increasing order thresholds: 300k -> 500k -> 1,000,000 VND)
   let voucherDiscount = 0;
   const cleanVoucher = typeof voucherCode === 'string' ? voucherCode.trim().toUpperCase() : '';
 

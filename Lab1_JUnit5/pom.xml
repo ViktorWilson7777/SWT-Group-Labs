@@ -49,7 +49,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Tự động đo độ phủ code (100% Code Coverage) và xuất HTML Report khi chạy mvn test -->
+            <!-- Automatically measure 100% Code Coverage and generate HTML Report during mvn test -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
