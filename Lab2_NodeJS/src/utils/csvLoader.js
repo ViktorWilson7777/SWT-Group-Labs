@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 /**
- * Parses a simple CSV file into an array of objects based on header row.
+ * Parses a CSV file into an array of objects based on header row.
  * Handles quoted strings with commas and trims whitespace.
  *
  * @param {string} relativeFilePath - Path relative to project root or absolute path
@@ -17,15 +17,12 @@ function loadCsvData(relativeFilePath) {
     throw new Error(`CSV file not found at path: ${absolutePath}`);
   }
 
-  const content = fs.readFileSync(absolutePath, 'utf-8');
+  const rawContent = fs.readFileSync(absolutePath, 'utf-8');
+  const content = rawContent.replace(/^\uFEFF/, '');
   const lines = content
     .split(/\r?\n/)
     .map(line => line.trim())
     .filter(line => line.length > 0 && !line.startsWith('#'));
-
-  if (lines.length < 2) {
-    return [];
-  }
 
   const headers = parseCsvLine(lines[0]);
   const rows = [];
@@ -34,7 +31,7 @@ function loadCsvData(relativeFilePath) {
     const values = parseCsvLine(lines[i]);
     const rowObj = {};
     headers.forEach((header, index) => {
-      rowObj[header] = values[index] !== undefined ? values[index] : '';
+      rowObj[header] = values[index] || '';
     });
     rows.push(rowObj);
   }

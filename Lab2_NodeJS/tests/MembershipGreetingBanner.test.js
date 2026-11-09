@@ -28,7 +28,7 @@ describe('Lab 2 - Requirement (ii): Test Render String (MembershipGreetingBanner
             customerName={customerName || undefined}
             tier={tier}
             loyaltyPoints={parseInt(loyaltyPoints, 10)}
-            isWarrantyExpiring={isWarrantyExpiring === 'true'}
+            isWarrantyExpiring={String(isWarrantyExpiring).trim().toLowerCase() === 'true'}
             customAnnouncement={customAnnouncement || undefined}
           />
         );
