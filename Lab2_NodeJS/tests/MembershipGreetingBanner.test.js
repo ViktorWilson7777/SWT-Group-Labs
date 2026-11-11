@@ -67,15 +67,28 @@ describe('Lab 2 - Requirement (ii): Test Render String (MembershipGreetingBanner
       expect(screen.queryByTestId('custom-announcement')).toBeNull();
     });
 
-    test('renders generic greeting and hides announcement when strings contain only whitespaces', () => {
+    test('renders generic greeting and hides announcement when inputs are non-strings or whitespaces', () => {
       render(<MembershipGreetingBanner customerName="    " customAnnouncement="   " />);
       expect(screen.getByTestId('greeting-header')).toHaveTextContent(
         'Xin chào quý khách! Chào mừng bạn đến với EGA Autocare.'
       );
       expect(screen.queryByTestId('custom-announcement')).toBeNull();
+
+      render(<MembershipGreetingBanner customerName={12345} customAnnouncement={9999} />);
+      expect(screen.getAllByTestId('greeting-header')[1]).toHaveTextContent(
+        'Xin chào quý khách! Chào mừng bạn đến với EGA Autocare.'
+      );
+      expect(screen.queryAllByTestId('custom-announcement')).toHaveLength(0);
     });
 
-    test('renders zero-points string when loyaltyPoints is not a number or negative', () => {
+    test('trims tier string and handles lowercase properly', () => {
+      render(<MembershipGreetingBanner tier="  vip  " />);
+      expect(screen.getByTestId('tier-info')).toHaveTextContent(
+        'Hạng thành viên: VIP - Giảm 20% phụ tùng và miễn phí cứu hộ 24/7.'
+      );
+    });
+
+    test('renders zero-points string when loyaltyPoints is not a finite positive number', () => {
       render(<MembershipGreetingBanner loyaltyPoints={-10} />);
       expect(screen.getByTestId('points-summary')).toHaveTextContent(
         'Điểm tích lũy: 0 điểm. Hãy sử dụng dịch vụ để nhận điểm thưởng.'
@@ -83,6 +96,11 @@ describe('Lab 2 - Requirement (ii): Test Render String (MembershipGreetingBanner
 
       render(<MembershipGreetingBanner loyaltyPoints="invalid" />);
       expect(screen.getAllByTestId('points-summary')[1]).toHaveTextContent(
+        'Điểm tích lũy: 0 điểm. Hãy sử dụng dịch vụ để nhận điểm thưởng.'
+      );
+
+      render(<MembershipGreetingBanner loyaltyPoints={Infinity} />);
+      expect(screen.getAllByTestId('points-summary')[2]).toHaveTextContent(
         'Điểm tích lũy: 0 điểm. Hãy sử dụng dịch vụ để nhận điểm thưởng.'
       );
     });

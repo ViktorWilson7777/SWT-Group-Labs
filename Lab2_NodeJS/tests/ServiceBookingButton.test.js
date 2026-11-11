@@ -85,13 +85,16 @@ describe('Lab 2 - Requirement (i): Test Button (ServiceBookingButton)', () => {
     expect(screen.getByTestId('booking-status')).toHaveTextContent('Đã đặt lại trạng thái ban đầu.');
   });
 
-  test('handles invalid initialSlots gracefully by defaulting to 0', () => {
+  test('handles invalid initialSlots gracefully by defaulting to 0, and floors floating point numbers', () => {
     render(<ServiceBookingButton initialSlots={-5} />);
     expect(screen.getByTestId('slot-count')).toHaveTextContent('0');
     expect(screen.getByTestId('booking-btn')).toBeDisabled();
 
     render(<ServiceBookingButton initialSlots="invalid_slot" />);
     expect(screen.getAllByTestId('slot-count')[1]).toHaveTextContent('0');
+
+    render(<ServiceBookingButton initialSlots={2.8} />);
+    expect(screen.getAllByTestId('slot-count')[2]).toHaveTextContent('2');
   });
 
   test('functions normally without passing onBookingSuccess callback', () => {

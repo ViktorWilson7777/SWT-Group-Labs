@@ -59,9 +59,10 @@ describe('Lab 2 - Requirement (iv): Test Function with if-else Conditions (disco
   });
 
   describe('Comprehensive Branch & Boundary Coverage (100% Coverage Target)', () => {
-    test('should throw error when baseCost is missing or undefined', () => {
+    test('should throw error when baseCost is missing, undefined, or params is null', () => {
       expect(() => calculateServiceInvoice({})).toThrow('Chi phí dịch vụ không hợp lệ');
       expect(() => calculateServiceInvoice()).toThrow('Chi phí dịch vụ không hợp lệ');
+      expect(() => calculateServiceInvoice(null)).toThrow('Chi phí dịch vụ không hợp lệ');
     });
 
     test('should throw error when baseCost is null', () => {
@@ -69,10 +70,14 @@ describe('Lab 2 - Requirement (iv): Test Function with if-else Conditions (disco
         .toThrow('Chi phí dịch vụ không hợp lệ');
     });
 
-    test('should throw error when baseCost is not a number or NaN', () => {
+    test('should throw error when baseCost is not a number, NaN, or Infinity', () => {
       expect(() => calculateServiceInvoice({ customerTier: 'VIP', baseCost: 'one million' }))
         .toThrow('Chi phí dịch vụ không hợp lệ');
       expect(() => calculateServiceInvoice({ customerTier: 'VIP', baseCost: NaN }))
+        .toThrow('Chi phí dịch vụ không hợp lệ');
+      expect(() => calculateServiceInvoice({ customerTier: 'VIP', baseCost: Infinity }))
+        .toThrow('Chi phí dịch vụ không hợp lệ');
+      expect(() => calculateServiceInvoice({ customerTier: 'VIP', baseCost: -Infinity }))
         .toThrow('Chi phí dịch vụ không hợp lệ');
     });
 

@@ -27,6 +27,7 @@ export const DEFAULT_SERVICE = {
  * Used for Jest Snapshot testing.
  */
 export default function AutoServiceCard({ service = DEFAULT_SERVICE }) {
+  const currentService = service || DEFAULT_SERVICE;
   const {
     id,
     name,
@@ -38,12 +39,18 @@ export default function AutoServiceCard({ service = DEFAULT_SERVICE }) {
     rating,
     isHot,
     features
-  } = service;
+  } = currentService;
 
   const hasDiscount = originalPrice > promotionalPrice && promotionalPrice > 0;
   const discountPercent = hasDiscount
     ? Math.round(((originalPrice - promotionalPrice) / originalPrice) * 100)
     : 0;
+
+  const safeRating = typeof rating === 'number' && Number.isFinite(rating) ? rating : 0;
+  const safeFeatures = Array.isArray(features) ? features : [];
+  const safeWarrantyKm = typeof warrantyKm === 'number' ? warrantyKm.toLocaleString('vi-VN') : '0';
+  const safeOriginalPrice = typeof originalPrice === 'number' ? originalPrice.toLocaleString('vi-VN') : '0';
+  const safePromotionalPrice = typeof promotionalPrice === 'number' ? promotionalPrice.toLocaleString('vi-VN') : '0';
 
   return (
     <div className="ega-service-card" data-testid={`service-card-${id}`}>
@@ -56,17 +63,17 @@ export default function AutoServiceCard({ service = DEFAULT_SERVICE }) {
 
       <div className="service-rating" data-testid="service-rating">
         <span className="star-icon">★</span>
-        <span className="rating-value">{rating.toFixed(1)} / 5.0</span>
+        <span className="rating-value">{safeRating.toFixed(1)} / 5.0</span>
       </div>
 
       <div className="service-pricing" data-testid="service-pricing">
         {hasDiscount ? (
           <>
             <span className="promo-price" data-testid="promo-price">
-              {promotionalPrice.toLocaleString('vi-VN')} đ
+              {safePromotionalPrice} đ
             </span>
             <span className="original-price" data-testid="original-price">
-              {originalPrice.toLocaleString('vi-VN')} đ
+              {safeOriginalPrice} đ
             </span>
             <span className="discount-tag" data-testid="discount-tag">
               -{discountPercent}%
@@ -74,17 +81,17 @@ export default function AutoServiceCard({ service = DEFAULT_SERVICE }) {
           </>
         ) : (
           <span className="promo-price" data-testid="promo-price">
-            {originalPrice.toLocaleString('vi-VN')} đ
+            {safeOriginalPrice} đ
           </span>
         )}
       </div>
 
       <div className="service-warranty" data-testid="service-warranty">
-        Bảo hành: <strong>{warrantyMonths} tháng</strong> hoặc <strong>{warrantyKm.toLocaleString('vi-VN')} km</strong>
+        Bảo hành: <strong>{warrantyMonths} tháng</strong> hoặc <strong>{safeWarrantyKm} km</strong>
       </div>
 
       <ul className="service-features" data-testid="service-features">
-        {features.map((feature, idx) => (
+        {safeFeatures.map((feature, idx) => (
           <li key={`${id}-feature-${idx}`} className="feature-item">
             ✓ {feature}
           </li>

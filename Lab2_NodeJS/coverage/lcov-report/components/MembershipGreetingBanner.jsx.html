@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>29/29</span>
+                <span class='fraction'>30/30</span>
             </div>
         
             
@@ -140,7 +140,9 @@
 <a name='L75'></a><a href='#L75'>75</a>
 <a name='L76'></a><a href='#L76'>76</a>
 <a name='L77'></a><a href='#L77'>77</a>
-<a name='L78'></a><a href='#L78'>78</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -155,46 +157,48 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -233,14 +237,14 @@ export default function MembershipGreetingBanner({
 }) {
   // 1. Render string for greeting
   let greetingText = '';
-  if (customerName &amp;&amp; customerName.trim() !== '') {
+  if (typeof customerName === 'string' &amp;&amp; customerName.trim() !== '') {
     greetingText = `Xin chào, ${customerName.trim()}! Chào mừng bạn đến với EGA Autocare.`;
   } else {
     greetingText = 'Xin chào quý khách! Chào mừng bạn đến với EGA Autocare.';
   }
 &nbsp;
   // 2. Render string for tier description
-  const normalizedTier = (tier || '').toUpperCase();
+  const normalizedTier = (typeof tier === 'string' ? tier.trim() : '').toUpperCase();
   let tierBadgeText = '';
   if (normalizedTier === 'VIP') {
     tierBadgeText = 'Hạng thành viên: VIP - Giảm 20% phụ tùng và miễn phí cứu hộ 24/7.';
@@ -254,7 +258,7 @@ export default function MembershipGreetingBanner({
 &nbsp;
   // 3. Render string for loyalty points
   let pointsText = '';
-  if (typeof loyaltyPoints === 'number' &amp;&amp; loyaltyPoints &gt; 0) {
+  if (typeof loyaltyPoints === 'number' &amp;&amp; Number.isFinite(loyaltyPoints) &amp;&amp; loyaltyPoints &gt; 0) {
     const formattedVnd = (loyaltyPoints * 1000).toLocaleString('vi-VN');
     pointsText = `Điểm tích lũy: ${loyaltyPoints} điểm (quy đổi: ${formattedVnd} VNĐ).`;
   } else {
@@ -269,7 +273,9 @@ export default function MembershipGreetingBanner({
     warrantyAlertText = 'Tình trạng xe: Lịch bảo dưỡng vẫn đang trong thời hạn an toàn.';
   }
 &nbsp;
-  const hasCustomAnnouncement = Boolean(customAnnouncement &amp;&amp; customAnnouncement.trim() !== '');
+  const hasCustomAnnouncement = Boolean(
+    typeof customAnnouncement === 'string' &amp;&amp; customAnnouncement.trim() !== ''
+  );
 &nbsp;
   return (
     &lt;div className="ega-membership-banner" data-testid="membership-banner"&gt;
@@ -301,7 +307,7 @@ export default function MembershipGreetingBanner({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-11-11T13:08:00.675Z
+                at 2026-11-11T13:23:56.569Z
             </div>
         <script src="../prettify.js"></script>
         <script>

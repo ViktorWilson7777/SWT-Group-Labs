@@ -24,6 +24,10 @@ function loadCsvData(relativeFilePath) {
     .map(line => line.trim())
     .filter(line => line.length > 0 && !line.startsWith('#'));
 
+  if (lines.length === 0) {
+    return [];
+  }
+
   const headers = parseCsvLine(lines[0]);
   const rows = [];
 
@@ -40,12 +44,16 @@ function loadCsvData(relativeFilePath) {
 }
 
 /**
- * Splits a single CSV line into tokens, respecting double-quoted values.
+ * Splits a single CSV line into tokens, respecting double-quoted values and RFC 4180 escaped quotes ("").
  *
  * @param {string} line
  * @returns {string[]}
  */
 function parseCsvLine(line) {
+  if (!line || typeof line !== 'string') {
+    return [];
+  }
+
   const result = [];
   let current = '';
   let inQuotes = false;
@@ -53,7 +61,12 @@ function parseCsvLine(line) {
   for (let i = 0; i < line.length; i++) {
     const char = line[i];
     if (char === '"') {
-      inQuotes = !inQuotes;
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"';
+        i++; // Skip the escaped quote
+      } else {
+        inQuotes = !inQuotes;
+      }
     } else if (char === ',' && !inQuotes) {
       result.push(current.trim());
       current = '';

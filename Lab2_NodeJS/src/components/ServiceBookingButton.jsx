@@ -10,13 +10,16 @@ export default function ServiceBookingButton({
   serviceName = 'Bảo dưỡng xe định kỳ',
   onBookingSuccess = null
 }) {
-  const safeInitialSlots = typeof initialSlots === 'number' && initialSlots >= 0 ? initialSlots : 0;
+  const safeInitialSlots =
+    typeof initialSlots === 'number' && Number.isFinite(initialSlots) && initialSlots >= 0
+      ? Math.floor(initialSlots)
+      : 0;
   const [slots, setSlots] = useState(safeInitialSlots);
   const [bookingCount, setBookingCount] = useState(0);
   const [statusMessage, setStatusMessage] = useState('Chưa có lịch hẹn nào');
 
   const handleBook = () => {
-    const nextSlots = slots - 1;
+    const nextSlots = Math.max(0, slots - 1);
     const nextBookingCount = bookingCount + 1;
     const bookingCode = `EGA-${1000 + nextBookingCount}`;
 
@@ -47,7 +50,7 @@ export default function ServiceBookingButton({
     setStatusMessage('Đã đặt lại trạng thái ban đầu.');
   };
 
-  const isFull = slots === 0;
+  const isFull = slots <= 0;
 
   return (
     <div className="service-booking-container" data-testid="service-booking-card">

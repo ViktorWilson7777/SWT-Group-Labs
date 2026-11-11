@@ -20,14 +20,12 @@ function calculateServiceInvoice(params = {}) {
     voucherCode,
     isFirstTime = false,
     hasVatInvoice = false
-  } = params;
+  } = params || {};
 
-  // 1. Validation for base service cost
+  // 1. Validation for base service cost (must be a finite positive number)
   if (
-    baseCost === undefined ||
-    baseCost === null ||
     typeof baseCost !== 'number' ||
-    Number.isNaN(baseCost) ||
+    !Number.isFinite(baseCost) ||
     baseCost <= 0
   ) {
     throw new Error('Chi phí dịch vụ không hợp lệ: phải là số lớn hơn 0');
@@ -51,7 +49,7 @@ function calculateServiceInvoice(params = {}) {
 
   const tierDiscountAmount = Math.round(baseCost * discountRate);
 
-  // 3. Voucher discount branches (strictly increasing order thresholds: 300k -> 500k -> 1,000,000 VND)
+  // 3. Voucher discount branches (strictly decreasing order thresholds: 1,000,000 -> 500,000 -> 300,000 VND)
   let voucherDiscount = 0;
   const cleanVoucher = typeof voucherCode === 'string' ? voucherCode.trim().toUpperCase() : '';
 

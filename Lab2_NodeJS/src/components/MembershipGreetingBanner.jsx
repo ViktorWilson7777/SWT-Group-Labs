@@ -14,14 +14,14 @@ export default function MembershipGreetingBanner({
 }) {
   // 1. Render string for greeting
   let greetingText = '';
-  if (customerName && customerName.trim() !== '') {
+  if (typeof customerName === 'string' && customerName.trim() !== '') {
     greetingText = `Xin chào, ${customerName.trim()}! Chào mừng bạn đến với EGA Autocare.`;
   } else {
     greetingText = 'Xin chào quý khách! Chào mừng bạn đến với EGA Autocare.';
   }
 
   // 2. Render string for tier description
-  const normalizedTier = (tier || '').toUpperCase();
+  const normalizedTier = (typeof tier === 'string' ? tier.trim() : '').toUpperCase();
   let tierBadgeText = '';
   if (normalizedTier === 'VIP') {
     tierBadgeText = 'Hạng thành viên: VIP - Giảm 20% phụ tùng và miễn phí cứu hộ 24/7.';
@@ -35,7 +35,7 @@ export default function MembershipGreetingBanner({
 
   // 3. Render string for loyalty points
   let pointsText = '';
-  if (typeof loyaltyPoints === 'number' && loyaltyPoints > 0) {
+  if (typeof loyaltyPoints === 'number' && Number.isFinite(loyaltyPoints) && loyaltyPoints > 0) {
     const formattedVnd = (loyaltyPoints * 1000).toLocaleString('vi-VN');
     pointsText = `Điểm tích lũy: ${loyaltyPoints} điểm (quy đổi: ${formattedVnd} VNĐ).`;
   } else {
@@ -50,7 +50,9 @@ export default function MembershipGreetingBanner({
     warrantyAlertText = 'Tình trạng xe: Lịch bảo dưỡng vẫn đang trong thời hạn an toàn.';
   }
 
-  const hasCustomAnnouncement = Boolean(customAnnouncement && customAnnouncement.trim() !== '');
+  const hasCustomAnnouncement = Boolean(
+    typeof customAnnouncement === 'string' && customAnnouncement.trim() !== ''
+  );
 
   return (
     <div className="ega-membership-banner" data-testid="membership-banner">

@@ -47,4 +47,29 @@ describe('Lab 2 - Requirement (iii): Test Snapshot (AutoServiceCard)', () => {
     const { container } = render(<AutoServiceCard service={nonDiscountService} />);
     expect(container).toMatchSnapshot();
   });
+
+  test('renders default service when service prop is null', () => {
+    const { container } = render(<AutoServiceCard service={null} />);
+    expect(container.querySelector('.service-name')).toHaveTextContent('Gói Bảo Dưỡng Cấp Cao & Thay Dầu Castrol');
+  });
+
+  test('renders fallback values when optional fields are null or non-numbers', () => {
+    const minimalService = {
+      id: 'EGA-SRV-MINIMAL',
+      name: 'Kiểm tra nhanh',
+      category: 'Khác',
+      originalPrice: null,
+      promotionalPrice: null,
+      warrantyMonths: 0,
+      warrantyKm: null,
+      rating: null,
+      isHot: false,
+      features: null
+    };
+
+    const { container } = render(<AutoServiceCard service={minimalService} />);
+    expect(container.querySelector('.rating-value')).toHaveTextContent('0.0 / 5.0');
+    expect(container.querySelector('.service-features')).toBeEmptyDOMElement();
+    expect(container.querySelector('.promo-price')).toHaveTextContent('0 đ');
+  });
 });
