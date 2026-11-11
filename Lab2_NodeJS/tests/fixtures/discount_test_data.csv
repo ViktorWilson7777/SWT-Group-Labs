@@ -1,4 +1,4 @@
-testId,customerTier,baseCost,voucherCode,isFirstTime,hasVatInvoice,expectedDiscountRate,expectedVoucherDiscount,expectedTotalDiscount,expectedIsCapped,expectedVat,expectedFinalCost,expectedError
+﻿testId,customerTier,baseCost,voucherCode,isFirstTime,hasVatInvoice,expectedDiscountRate,expectedVoucherDiscount,expectedTotalDiscount,expectedIsCapped,expectedVat,expectedFinalCost,expectedError
 TC_DISC_01,VIP,2000000,EGAMEGA,false,false,0.20,300000,700000,false,0,1300000,
 TC_DISC_02,GOLD,600000,EGASUPER,true,true,0.15,100000,220000,false,38000,418000,
 TC_DISC_03,SILVER,200000,EGAFREE,false,false,0.10,0,20000,false,0,180000,
