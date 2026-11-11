@@ -24,9 +24,11 @@ describe('Lab 2 - Helper Unit Test: CSV Loader (csvLoader)', () => {
   });
 
   test('returns empty array when CSV file is empty or contains only comments', () => {
-    const emptyPath = path.resolve(__dirname, 'fixtures/empty_test.csv');
-    const data = loadCsvData(emptyPath);
+    const fs = require('fs');
+    const spy = jest.spyOn(fs, 'readFileSync').mockReturnValueOnce('# only comments\n# second line\n');
+    const data = loadCsvData('tests/fixtures/discount_test_data.csv');
     expect(data).toEqual([]);
+    spy.mockRestore();
   });
 
   test('throws descriptive error if CSV file does not exist', () => {
