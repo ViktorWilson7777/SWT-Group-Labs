@@ -4,8 +4,9 @@
 # =====================================================================
 /*
 
-# Chỉ cho phép đẩy đúng 4 thư mục chuẩn trong Kế hoạch Lab (+ .gitignore):
+# Chỉ cho phép đẩy đúng 4 thư mục chuẩn trong Kế hoạch Lab (+ .gitignore, .gitattributes):
 !/.gitignore
+!/.gitattributes
 !/Lab1_JUnit5/
 !/Lab2_NodeJS/
 !/Lab3_Selenium_EGA_Autocare/

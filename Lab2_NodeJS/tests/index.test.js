@@ -7,3 +7,4 @@ describe('Lab 2 - Entry Point Index Export Test (src/index.js)', () => {
     expect(typeof indexExports.parseCsvLine).toBe('function');
   });
 });
+
