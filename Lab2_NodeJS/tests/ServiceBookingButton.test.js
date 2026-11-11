@@ -85,6 +85,23 @@ describe('Lab 2 - Requirement (i): Test Button (ServiceBookingButton)', () => {
     expect(screen.getByTestId('booking-status')).toHaveTextContent('Đã đặt lại trạng thái ban đầu.');
   });
 
+  test('generates unique sequential booking codes even after reset', () => {
+    render(<ServiceBookingButton initialSlots={2} />);
+    const bookingBtn = screen.getByTestId('booking-btn');
+    const resetBtn = screen.getByTestId('reset-btn');
+
+    // First booking: EGA-1001
+    fireEvent.click(bookingBtn);
+    expect(screen.getByTestId('booking-status')).toHaveTextContent('Mã đặt: EGA-1001');
+
+    // Reset button clicked
+    fireEvent.click(resetBtn);
+
+    // Next booking after reset should be EGA-1002, NOT duplicate EGA-1001
+    fireEvent.click(bookingBtn);
+    expect(screen.getByTestId('booking-status')).toHaveTextContent('Mã đặt: EGA-1002');
+  });
+
   test('handles invalid initialSlots gracefully by defaulting to 0, and floors floating point numbers', () => {
     render(<ServiceBookingButton initialSlots={-5} />);
     expect(screen.getByTestId('slot-count')).toHaveTextContent('0');

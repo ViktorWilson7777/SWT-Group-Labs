@@ -36,7 +36,7 @@ export default function MembershipGreetingBanner({
   // 3. Render string for loyalty points
   let pointsText = '';
   if (typeof loyaltyPoints === 'number' && Number.isFinite(loyaltyPoints) && loyaltyPoints > 0) {
-    const formattedVnd = (loyaltyPoints * 1000).toLocaleString('vi-VN');
+    const formattedVnd = (loyaltyPoints * 1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     pointsText = `Điểm tích lũy: ${loyaltyPoints} điểm (quy đổi: ${formattedVnd} VNĐ).`;
   } else {
     pointsText = 'Điểm tích lũy: 0 điểm. Hãy sử dụng dịch vụ để nhận điểm thưởng.';

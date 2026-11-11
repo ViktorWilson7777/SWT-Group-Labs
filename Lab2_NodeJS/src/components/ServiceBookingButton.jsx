@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 /**
  * ServiceBookingButton component for EGA Autocare.
@@ -15,16 +15,15 @@ export default function ServiceBookingButton({
       ? Math.floor(initialSlots)
       : 0;
   const [slots, setSlots] = useState(safeInitialSlots);
-  const [bookingCount, setBookingCount] = useState(0);
+  const bookingCountRef = useRef(0);
   const [statusMessage, setStatusMessage] = useState('Chưa có lịch hẹn nào');
 
   const handleBook = () => {
     const nextSlots = Math.max(0, slots - 1);
-    const nextBookingCount = bookingCount + 1;
-    const bookingCode = `EGA-${1000 + nextBookingCount}`;
+    bookingCountRef.current += 1;
+    const bookingCode = `EGA-${1000 + bookingCountRef.current}`;
 
     setSlots(nextSlots);
-    setBookingCount(nextBookingCount);
 
     let message = '';
     if (nextSlots === 0) {
@@ -46,7 +45,6 @@ export default function ServiceBookingButton({
 
   const handleReset = () => {
     setSlots(safeInitialSlots);
-    setBookingCount(0);
     setStatusMessage('Đã đặt lại trạng thái ban đầu.');
   };
 

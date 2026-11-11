@@ -46,11 +46,16 @@ export default function AutoServiceCard({ service = DEFAULT_SERVICE }) {
     ? Math.round(((originalPrice - promotionalPrice) / originalPrice) * 100)
     : 0;
 
+  const formatNumberVi = (num) =>
+    typeof num === 'number' && Number.isFinite(num)
+      ? num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+      : '0';
+
   const safeRating = typeof rating === 'number' && Number.isFinite(rating) ? rating : 0;
   const safeFeatures = Array.isArray(features) ? features : [];
-  const safeWarrantyKm = typeof warrantyKm === 'number' ? warrantyKm.toLocaleString('vi-VN') : '0';
-  const safeOriginalPrice = typeof originalPrice === 'number' ? originalPrice.toLocaleString('vi-VN') : '0';
-  const safePromotionalPrice = typeof promotionalPrice === 'number' ? promotionalPrice.toLocaleString('vi-VN') : '0';
+  const safeWarrantyKm = formatNumberVi(warrantyKm);
+  const safeOriginalPrice = formatNumberVi(originalPrice);
+  const safePromotionalPrice = formatNumberVi(promotionalPrice);
 
   return (
     <div className="ega-service-card" data-testid={`service-card-${id}`}>
